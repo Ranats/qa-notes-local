@@ -1,0 +1,11 @@
+.env*
+!.env.example
+budget-config.local.json
+node_modules/
+*.log
+*.tmp
+Thumbs.db
+.DS_Store
+
+usage-ledger.json*
+user-presentation.json*

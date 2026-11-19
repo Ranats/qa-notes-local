@@ -1,0 +1,668 @@
+{
+  "qa": [
+    {
+      "id": "Q01",
+      "title": "UPO の意味",
+      "cues": "UPO / user persona / personality / internal model",
+      "question": "What exactly do you mean by UPO?",
+      "confirm": "Are you asking how we define U P O?",
+      "answer": "In this paper, U P O is an operational name for a response pattern associated with conversation history. We read it from the agent's responses. We do not directly measure a person's personality or the model's internal representation of a user.",
+      "ja": "UPO は、会話履歴に関連する応答パターンの操作的な呼び名です。応答から読み取りますが、人の性格や内部のユーザー表現を直接測ったものではありません。",
+      "source": "論文 Sections 1 と 3",
+      "slide": 2
+    },
+    {
+      "id": "Q02",
+      "title": "新規性と先行研究との違い",
+      "cues": "contribution / novelty / new / previous work / memory architecture",
+      "question": "What is the main contribution compared with existing persona research?",
+      "confirm": "Are you asking about the contribution of the evaluation design?",
+      "answer": "Our contribution is an evaluation design and a comparison under controlled histories. We separate agent instructions from history, keep probes out of the main conversation, and examine meaning-related and form-related measures separately. We do not propose a new memory architecture.",
+      "ja": "貢献は、履歴を制御した評価設計と比較です。指示と履歴を分け、測定用の質問を本流へ戻さず、意味に関する尺度と書き方に関する尺度を別々に見ます。新しい記憶機構を提案した研究ではありません。",
+      "source": "論文 Sections 1 と 2 および 6",
+      "slide": 4
+    },
+    {
+      "id": "Q03",
+      "title": "C2 と C3 で履歴は同一か",
+      "cues": "same history / matched / control / C2 / C3 / generated histories",
+      "question": "Did C2 and C3 receive exactly the same history?",
+      "confirm": "Are you asking whether the histories were matched between C two and C three?",
+      "answer": "Yes. Within each matched setting, C two and C three receive the same scripted history. The added A P instructions are the difference. We are not comparing two freely generated conversations that have already developed different histories.",
+      "ja": "同じ設定内では、C2 と C3 は同一の台本化された履歴を受け取ります。違いは追加の AP 指示です。自由生成の結果すでに履歴が異なる二つの会話を比較したものではありません。",
+      "source": "論文 Section 4.2 と Table 1",
+      "slide": 3
+    },
+    {
+      "id": "Q04",
+      "title": "AP の内容と一般化できる範囲",
+      "cues": "AP / instructions / persona prompt / cautious / prompt design",
+      "question": "What instructions were included in AP?",
+      "confirm": "Are you asking what the A P prompt asks the agent to do?",
+      "answer": "The A P asks for structured, concise, and cautious responses. It also limits clarification and discourages unsupported certainty. It does not add user attributes. We tested this one instruction set, so we cannot generalize the result to every kind of agent persona.",
+      "ja": "構造化・簡潔・慎重な応答、確認質問の制限、根拠のない断定の回避などを求めます。ユーザーの属性を追加するものではありません。一種類の指示セットなので、すべてのペルソナへの一般化はできません。",
+      "source": "論文 Section 4.2 と Table 2",
+      "slide": 15
+    },
+    {
+      "id": "Q05",
+      "title": "人工的な会話を使う理由",
+      "cues": "synthetic / scripted / real users / realistic / natural conversation",
+      "question": "Why did you use scripted histories rather than real conversations?",
+      "confirm": "Are you asking why we used fixed synthetic histories?",
+      "answer": "Fixed histories let us compare the same prior conversation with and without A P. This gives us control within the experiment. However, it does not establish how an agent would behave in natural, long-term interactions with real users.",
+      "ja": "同じ過去の会話を AP あり・なしで比較するためです。実験内の比較は制御しやすくなりますが、実ユーザーとの自然な長期対話で同じ結果になるとまでは言えません。",
+      "source": "論文 Sections 4.2 と 4.3 および 7",
+      "slide": 5
+    },
+    {
+      "id": "Q06",
+      "title": "データ数と独立な標本数",
+      "cues": "sample size / how many / independent / repetitions / replicates",
+      "question": "How many independent samples did you have?",
+      "confirm": "Are you asking about the number of independent lineages?",
+      "answer": "We had eighty lineages and four thousand three hundred and twenty responses overall. In each language, the main C two versus C three comparison used fifteen lineages per condition. Each scenario-condition cell had five repetitions. Responses within a lineage were not treated as independent samples.",
+      "ja": "全体では80系列・4,320応答です。各言語の主比較では C2 と C3 が各15系列で、シナリオと条件の各セルを5回反復しています。系列内の応答を独立した標本として扱ってはいません。",
+      "source": "論文 Sections 4.1 と 4.3 および Table 1",
+      "slide": 5
+    },
+    {
+      "id": "Q07",
+      "title": "測定の質問が会話を変えないか",
+      "cues": "probe / contamination / write back / branch / measurement",
+      "question": "Could the probes themselves influence later responses?",
+      "confirm": "Are you asking whether a probe changes the later conversation?",
+      "answer": "Each probe is asked in a copy of the current conversation. Neither the probe nor its answer is returned to the main lineage. The main history continues separately. This prevents the probe text from becoming part of the later history.",
+      "ja": "各 probe は現在の会話のコピーで実行します。質問も答えも本流へ戻さず、元の履歴は別に続きます。測定用の文章が後の履歴に混ざるのを防ぐ設計です。",
+      "source": "論文 Sections 4.1 と 4.4",
+      "slide": 4
+    },
+    {
+      "id": "Q08",
+      "title": "分離をどこまで確認したか",
+      "cues": "isolation / hidden state / backend / audit / leakage",
+      "question": "How do you know that the lineages were isolated?",
+      "confirm": "Are you asking what our isolation audit can verify?",
+      "answer": "We checked logged execution fields and reconstructed request contexts. We found no history mismatches or signs of probe write-back in that audit. However, we did not retain the raw requests sent to the provider. The audit does not prove anything about inaccessible provider-side state.",
+      "ja": "実行ログと再構成したリクエスト文脈を調べ、履歴の不一致や probe の書き戻しの兆候は見つかりませんでした。ただし実際に送信した生のリクエストは残していません。アクセスできないプロバイダー内部の状態まで証明する監査ではありません。",
+      "source": "論文 Sections 4.3 と 4.5 および 7 と Table 6",
+      "slide": 16
+    },
+    {
+      "id": "Q09",
+      "title": "埋め込み距離は妥当か",
+      "cues": "embedding / semantic / validity / validate / meaning",
+      "question": "How did you validate the embedding measure?",
+      "confirm": "Are you asking what the embedding measure can tell us?",
+      "answer": "We used text embedding three large as a proxy for differences in meaning. We checked sixteen handcrafted text pairs as a small qualitative diagnostic. This does not validate a personalization score, and the embedding distances did not cleanly separate all types of change.",
+      "ja": "text-embedding-3-large を使い、意味の違いを近似的に測りました。手作りの16組の文章で小さな定性的診断を行いましたが、個人化の良さを測る得点としての妥当性を示すものではなく、変化の全種類をきれいに区別できたわけでもありません。",
+      "source": "論文 Section 4.6",
+      "slide": 6
+    },
+    {
+      "id": "Q10",
+      "title": "書き方の指標と AP が重複しないか",
+      "cues": "rule-based / length / overlap / confound / character count",
+      "question": "Do the rule features simply reflect compliance with AP?",
+      "confirm": "Are you asking whether the rule features overlap with the A P instructions?",
+      "answer": "Yes, several features overlap with what A P asks the agent to do. The measure is also strongly affected by length. Removing character count changes the sign of the English contrast. We therefore treat it as a diagnostic of response form, not an independent measure of adaptation.",
+      "ja": "AP が要求する内容と重なる特徴があり、長さの影響も大きい指標です。文字数を外すと英語の差の符号が変わります。独立した適応の尺度ではなく、応答形式の診断として扱います。",
+      "source": "論文 Sections 4.6 と 5.4 および 7",
+      "slide": 15
+    },
+    {
+      "id": "Q11",
+      "title": "英語の信頼区間と p 値の不一致",
+      "cues": "significant / English / confidence interval / p-value / zero point zero five six",
+      "question": "Why does the English interval exclude zero when the p-value is above 0.05?",
+      "confirm": "Are you asking why the English interval and p-value give different threshold decisions?",
+      "answer": "They come from different procedures: a percentile bootstrap and a condition-label permutation test. They need not give identical threshold decisions in a small sample. We report both and describe the English evidence as weaker. We do not make a single clear-cut significance claim for English.",
+      "ja": "百分位ブートストラップと条件ラベルの置換検定という異なる手続きです。小標本で二値判断が一致するとは限りません。両方を示し、英語の証拠は弱めと説明します。英語について明確な有意・非有意の一言にまとめません。",
+      "source": "論文 Sections 4.6 と 5.2 および Table 8",
+      "slide": 13
+    },
+    {
+      "id": "Q12",
+      "title": "検定と多重比較",
+      "cues": "statistics / bootstrap / permutation / correction / multiple comparisons",
+      "question": "Did you correct for multiple comparisons?",
+      "confirm": "Are you asking whether the p-values were corrected for multiple comparisons?",
+      "answer": "No. The p-values were descriptive and were not corrected for the family of comparisons. We used lineage-level bootstrap intervals and condition-label permutation tests. We therefore emphasize the direction, uncertainty, and consistency across measurements, rather than treating each p-value as a separate confirmed finding.",
+      "ja": "p 値は記述的に扱い、多重比較全体に対する補正はしていません。系列単位のブートストラップ区間と条件ラベルの置換検定を用います。各 p 値を独立した確定的発見とせず、方向、不確実性、指標間の整合性を重視します。",
+      "source": "論文 Section 4.6 と Table 8",
+      "slide": 13
+    },
+    {
+      "id": "Q13",
+      "title": "変化が小さければ良いのか",
+      "cues": "better / personalization / useful / reduced drift / less responsive",
+      "question": "Does smaller drift mean that personalization is better?",
+      "confirm": "Are you asking whether smaller drift is necessarily beneficial?",
+      "answer": "No. Smaller drift may reflect greater consistency, stronger constraints from A P, or less responsiveness to history. Our experiment cannot distinguish these explanations. We did not measure whether users preferred the responses or benefited from them.",
+      "ja": "必ずしも良いとは言えません。一貫性、AP の制約、履歴への反応の弱さなどが考えられますが、区別できません。利用者が好んだか、利益を得たかも測っていません。",
+      "source": "論文 Sections 6 と 8",
+      "slide": 10
+    },
+    {
+      "id": "Q14",
+      "title": "同じ条件でも応答がばらつく理由",
+      "cues": "stochastic / random / same settings / between-lineage / dispersion",
+      "question": "Why do independent lineages still differ under the same conditions?",
+      "confirm": "Are you asking about variation between repeated runs?",
+      "answer": "Generation is stochastic, so repeated runs can differ under the same configured settings. We measured this as between-lineage variation. A P was associated with smaller embedding dispersion in this setup, but did not remove the variation.",
+      "ja": "生成には確率的なばらつきがあるため、設定が同じでも反復で応答が異なります。これを系列間のばらつきとして測りました。今回 AP は埋め込みのばらつきの小ささと関連しましたが、0にはなりませんでした。",
+      "source": "論文 Sections 4.3 と 5.3 および Table 7",
+      "slide": 14
+    },
+    {
+      "id": "Q15",
+      "title": "日本語と英語の違いの解釈",
+      "cues": "Japanese / English / translation / language / culture",
+      "question": "Can you explain the difference between Japanese and English?",
+      "confirm": "Are you asking how we interpret differences between the two languages?",
+      "answer": "The histories and probes were matched in meaning and function, rather than required to be word-for-word translations. We analyze the languages separately. This is a limited robustness check. It does not identify the cause of language differences or establish a cultural effect.",
+      "ja": "履歴と probe は、逐語訳を義務にするのでなく、意味と役割を対応させました。二言語は別々に解析し、限定的な頑健性確認として扱います。言語差の原因や文化的効果を特定したわけではありません。",
+      "source": "論文 Sections 4.2 と 4.3 および 6 と 7",
+      "slide": 11
+    },
+    {
+      "id": "Q16",
+      "title": "モデルと生成設定",
+      "cues": "which model / GPT / temperature / tokens / generalize",
+      "question": "Which model and generation settings did you use?",
+      "confirm": "Are you asking about the model and generation settings?",
+      "answer": "We used G P T five point one Codex mini through the Codex command-line interface. The temperature was zero point two, with a maximum of one thousand and twenty-four tokens. We have not established that the results generalize to other models or interfaces.",
+      "ja": "Codex のコマンドラインから GPT-5.1 Codex mini を使い、temperature は0.2、最大トークン数は1,024でした。他モデルや別のインターフェースへ一般化することは、この研究では確認していません。",
+      "source": "論文 Section 4.4 と Table 4 および Section 7",
+      "slide": 5
+    },
+    {
+      "id": "Q17",
+      "title": "人による評価の有無",
+      "cues": "human evaluation / participants / user study / ratings / preference",
+      "question": "Did you conduct a human evaluation or user study?",
+      "confirm": "Are you asking whether people evaluated the generated responses?",
+      "answer": "No. We did not collect human ratings in this study. The histories and probes were synthetic. Human judgments of consistency, response form, and adaptation are an important next step. The current measurements do not establish how people experience these differences.",
+      "ja": "この研究では人による評定は集めておらず、履歴と probe も人工的に作成しました。一貫性、応答の書き方、適応を人がどう感じるかの評価が次の課題です。現在の尺度だけでは体験上の違いは示せません。",
+      "source": "論文 Sections 4.4 と 7",
+      "slide": 11
+    },
+    {
+      "id": "Q18",
+      "title": "長期記憶や別セッションへの移行",
+      "cues": "long-term / memory / retention / transfer / reset / persistent",
+      "question": "Does this show that the agent retains a user model across sessions?",
+      "confirm": "Are you asking about retention or transfer across sessions?",
+      "answer": "No. The checkpoints represent added history within the experimental setup. We did not test retention after a context reset, transfer to another model, or natural interaction over a long period. These results do not establish a persistent user model.",
+      "ja": "測定時点は実験内で履歴を追加した状態です。文脈リセット後の保持、別モデルへの移行、長期間の自然な対話は検証していません。持続するユーザーモデルを示す結果ではありません。",
+      "source": "論文 Sections 3 と 7 と 8",
+      "slide": 11
+    },
+    {
+      "id": "Q19",
+      "title": "中間時点で四つの probe を使う理由",
+      "cues": "four probes / core / subset / selection / intermediate checkpoints",
+      "question": "How did you choose the four core probes?",
+      "confirm": "Are you asking how the core probes were selected?",
+      "answer": "In a separate bilingual rerun, we ranked eligible probes by how often C three had smaller embedding drift than C two across languages and scenarios, then by the size of the differences. This favors that direction, so the intermediate checks are exploratory. The main t zero to t ten comparison uses all twelve probes and does not depend on this selection.",
+      "ja": "別の二言語再実行において、指定形式・反復質問を除外し、言語×シナリオ6セルで C3−C2 が負となるセル数の多い順、正となるセル数の少ない順、平均絶対差の大きい順に順位付けしました。選択が C3＜C2 の方向を優先するため、中間時点は探索的な補助確認です。主たる t0→t10 比較は全12問を使い、この選定に依存しません。",
+      "source": "論文 Section 4.4; core selection 20260319 JSON と select_dense_lightweight_probes.py",
+      "slide": 16
+    },
+    {
+      "id": "Q20",
+      "title": "履歴なしの基準条件と確率的変動",
+      "cues": "baseline / C0 / C1 / no history / random variation / causal",
+      "question": "What do the no-history baselines tell you?",
+      "confirm": "Are you asking what C zero and C one control for?",
+      "answer": "C zero and C one are evaluated only before history is added. They show the initial response variation with and without A P. They are not full no-history trajectories over all checkpoints. We therefore do not claim that every measured difference is caused only by history.",
+      "ja": "C0 と C1 は履歴を加える前だけで評価し、AP あり・なしの初期のばらつきを示します。全時点をたどる履歴なし対照系列ではありません。測定したすべての差が履歴だけで生じたとは主張しません。",
+      "source": "論文 Sections 4.2 と 4.3 および 5.3 と Table 1",
+      "slide": 14
+    },
+    {
+      "id": "Q21",
+      "title": "再現性と保存されていないデータ",
+      "cues": "reproducibility / raw data / payload / embeddings / seeds / logs",
+      "question": "What are the limitations of the reproducibility audit?",
+      "confirm": "Are you asking what information was not retained?",
+      "answer": "The logged responses support the reported analyses. However, raw request payloads and raw embedding vectors were not retained. Some provider-side settings were also not logged. We cannot claim exact reproduction of the original generation or a complete audit of hidden state.",
+      "ja": "記録した応答から報告した解析を行っていますが、生のリクエストと埋め込みベクトルは保存していません。記録していないプロバイダー側の設定もあります。元の生成の完全な再現や、隠れた内部状態の完全な監査は主張できません。",
+      "source": "論文 Sections 4.5 と 4.6 および 7",
+      "slide": 16
+    },
+    {
+      "id": "Q22",
+      "title": "研究全体の目的と可搬性への位置づけ",
+      "cues": "broader goal / portability / research direction / practical implication / next step / future",
+      "question": "How does this study fit your broader research goal?",
+      "confirm": "Are you asking how this study relates to portability?",
+      "answer": "Our broader goal is to understand whether history-related response patterns can carry over to a new context or another model. First, we need a way to observe and compare them while examining agent instructions. This paper develops that evaluation design. It does not test persistence after a context reset, transfer to another model, or better personalization.",
+      "ja": "研究全体では、履歴に関連する応答パターンが新しい文脈や別モデルへ引き継がれるかを調べたいと考えています。その前提として、エージェントへの指示を考慮しながら観測・比較する方法が必要です。本論文はその評価設計を検討する第一段階です。文脈リセット後の保持、別モデルへの移行、個人化改善は今回検証していません。",
+      "source": "評価設計・実証範囲は論文 Sections 1、6–8。研究全体の可搬性目的は発表者方針（2026-11-16）。",
+      "slide": 12
+    },
+    {
+      "id": "Q23",
+      "title": "履歴に含めた希望の具体例",
+      "cues": "example / scenario / preference / smallest working version",
+      "question": "Can you give an example of the preference expressed in a history?",
+      "confirm": "Are you asking for an example from the scripted history?",
+      "answer": "In the development history, the user says, I want the smallest working version first. This is an example of the scripted input. We compare responses under the same history with and without A P. The example itself does not show that users preferred the resulting answers.",
+      "ja": "開発履歴のユーザー発言は「まず動く最小限のものがほしい」です。これは用意した入力の例で、同じ履歴のもとで AP の有無を比べます。この例自体が実ユーザーの回答への好みを示すわけではありません。実際の出力対の提示を求められた場合は、この回答で代用しないで確認後回答の表現を使います。",
+      "source": "論文 Table 3 とスライド2",
+      "slide": 2
+    },
+    {
+      "id": "Q24",
+      "title": "コードやデータの入手と後日の連絡",
+      "cues": "code / data / available / repository / share / contact",
+      "question": "Are the code and data available?",
+      "confirm": "Are you asking about access to the code or study materials?",
+      "answer": "I would need to check the release status before sharing code or data. Please contact me using the address on the last main slide. I can then confirm what materials can be shared.",
+      "ja": "共有前に公開・提供状況を確認する必要があります。最後の本編スライドの連絡先から連絡してもらい、提供可能な資料を確認します。公開 URL や公開済みという断定、送付の約束はしません。",
+      "source": "公開状況はこの台本では未確認。連絡先は最終稿に基づくスライド12。",
+      "slide": 12
+    }
+  ],
+  "emergency": [
+    {
+      "title": "聞き取れなかった",
+      "answer": "Could you please repeat the question more slowly?",
+      "ja": "もう少しゆっくり、もう一度質問していただけますか。"
+    },
+    {
+      "title": "単語は聞こえるが意味が分からない",
+      "answer": "Could you please say that in a simpler way?",
+      "ja": "もう少し簡単な言い方にしていただけますか。"
+    },
+    {
+      "title": "質問を確認してから答える",
+      "answer": "May I check that I understood your question?",
+      "ja": "質問を正しく理解したか、確認してよいですか。"
+    },
+    {
+      "title": "質問が複数あった",
+      "answer": "Could you please ask one question at a time?",
+      "ja": "一つずつ質問していただけますか。"
+    },
+    {
+      "title": "文字で確認したい",
+      "answer": "Could you please write the key words down?",
+      "ja": "重要な言葉を書いていただけますか。"
+    },
+    {
+      "title": "座長に言い換えを手伝ってもらう",
+      "answer": "Could you please help me understand the question?",
+      "ja": "質問を理解するのを手伝っていただけますか。"
+    },
+    {
+      "title": "正確な回答には確認が必要",
+      "answer": "I would like to check the details before answering. May I follow up after the session?",
+      "ja": "答える前に詳細を確認したいです。セッション後に回答してよいですか。"
+    },
+    {
+      "title": "この研究で調べていないこと",
+      "answer": "We did not test that in this study. I cannot draw a conclusion from these results.",
+      "ja": "それは今回調べていません。この結果から結論は出せません。"
+    }
+  ],
+  "sources": [
+    {
+      "id": "P1-1",
+      "title": "論文 p. 1",
+      "text": "Abstract Adaptive LLM-based agents can appear to adjust not only their answer content but also their response structure according to prior dialogue and user-stated preferences. This paper treats this phenomenon as a measurement problem, not as an attempt to reproduce naturalistic long-term human–agent interaction. We ask where history-conditioned user-side regularities become observable in generated responses under controlled histories. We introduce a branch-based design that separates Agent Persona (AP), the observable agent-side prior imposed by system constraints, from User Persona Observation (UPO), an operational label for responselevel user-side regularities inferred from dialogue history. Fixed probes elicit responses under inter-lineage isolation without writing probe responses back into the main lineage. Using Japanese and English tracks as a bounded bilingual robustness check, we compare an embedding-based semantic-proxy readout with a heuristic rule-based presentation diagnostic."
+    },
+    {
+      "id": "P1-2",
+      "title": "論文 p. 1",
+      "text": "A reconstructed-context audit checks that the AP-absent and AP-present matched-history conditions use matched injected histories and differ only in whether the AP prior is included in the observable inputs. Results show that the AP-present condition is associated with smaller embedding-space drift, with clearer evidence in Japanese and weaker but directionally consistent evidence in English. The rule-based diagnostic overlaps with AP instructions, is strongly length-sensitive, and varies by language and scenario. These findings suggest that adaptive dialogue agents should be evaluated by separating semantic-proxy drift from communicative presentation, and that UPO should be treated as an operational response-level readout rather than as a stable user trait or internal model state. CCS Concepts •Human-centered computing → User models;Natural language interfaces;•Computing methodologies → Discourse, dialogue and pragmatics. This work is licensed under a Creative Commons Attribution 4.0 International License. HAI ’26, Osaka, Japan ©2026 Copyright held by the owner/author(s)."
+    },
+    {
+      "id": "P1-3",
+      "title": "論文 p. 1",
+      "text": "ACM ISBN 979-8-4007-2575-3/2026/11 https://doi.org/10.1145/3841580.3841608 Keywords human-agent interaction, large language models, adaptive dialogue agents, dialogue evaluation, user modeling, communicative presentation ACM Reference Format: Satoshi Koda, Hiroshi Someya, and Kagayaki Kuroda. 2026. Persona-Isolated Evaluation of LLM-Based Dialogue Agents: Measuring History-Conditioned Response Variation. InProceedings of the 14th International Conference on Human-Agent Interaction (HAI ’26), November 16–19, 2026, Osaka, Japan. ACM, New York, NY, USA, 9 pages. https://doi.org/10.1145/3841580.3841608 1 Introduction Large language models (LLMs) are increasingly used in conversational agents, AI assistants, and virtual human interfaces. In these settings, interaction quality depends not only on language capability but also on whether the system appears to adapt to a user’s explanation style, clarification needs, and task framing across turns."
+    },
+    {
+      "id": "P1-4",
+      "title": "論文 p. 1",
+      "text": "This concern is relevant to adaptive human–agent interaction, but this paper does not attempt to model real elapsed time, multi-session field interaction, or user change over time. Instead, it studies a narrower measurement problem for adaptive LLM-based dialogue agents: under controlled multi-turn histories, where does historyconditioned response variation become observable, and how is that variation shaped by an explicit agent-side prior? Across turns, adaptation can appear in answer content and in communicative presentation, including conclusion order, evidence, hedging, paragraphs, lists, and cautions. Because these cues may differ by language, Japanese and English serve as a bounded robustness check rather than evidence for general cross-linguistic or cultural claims. Recent work surveys persona and personalized alignment [4, 20], proposes multi-session personalization [9], and benchmarks longhorizon memory [6, 11]. These studies usually improve personalization rather than locate response-level regularity under controlled conditions."
+    },
+    {
+      "id": "P1-5",
+      "title": "論文 p. 1",
+      "text": "Apparent adaptation may reflect local history, system prompts, runtime policy, external memory, or latent user modeling. Without separating these factors, it is difficult to identify whether an observed response difference is associated with accumulated history, the agent-side prior, or another memory mechanism. An aggregate personalization score can also obscure whether the difference appears primarily in embedding space or in AP-sensitive response form. To study this problem, we distinguishAgent Persona(AP), the observable agent-side prior induced by system instructions and"
+    },
+    {
+      "id": "P2-1",
+      "title": "論文 p. 2",
+      "text": "HAI ’26, November 16–19, 2026, Osaka, Japan Satoshi Koda, Hiroshi Someya, and Kagayaki Kuroda runtime constraints, fromUser Persona Observation(UPO), an operational label for user-side response regularities inferred from dialogue history. UPO is treated neither as a directly observable state nor as a stable human personality construct. Instead, we read it out indirectly through history-conditioned differences projected into the agent’s responses. We use the termPersona-Isolated LLMs for this experimental setting, in which the UPO readout is studied under operational inter-lineage isolation: independent conversational threads without shared cross-session memory in the logged execution context, while still allowing controlled history accumulation within each lineage. This paper addresses that measurement boundary through a controlled dialogue study that separatesinter-lineage isolationfrom within-lineage history accumulation."
+    },
+    {
+      "id": "P2-2",
+      "title": "論文 p. 2",
+      "text": "Different lineages are operationally isolated from one another and from explicit cross-session memory, while each lineage accumulates its own injected history across checkpoints. The design also keeps evaluation probes out of the main conversational stream, thereby reducing measurement contamination. In adaptive dialogue-agent evaluation, probe prompts can contaminate later turns, and external memory layers can obscure whether apparent continuity comes from session-local history or stored cross-session state. The issue is therefore not simply whether added history changes responses, but whether history-conditioned regularity remains measurable under interlineage isolation and whether AP affects semantic and structural readouts differently under matched histories. Our design separates these targets by comparing embedding-based semantic drift with rule-based response structuring under matched histories and agent priors."
+    },
+    {
+      "id": "P2-3",
+      "title": "論文 p. 2",
+      "text": "We contribute: (i) an operational AP/UPO formulation for adaptive LLM-based agent evaluation, (ii) a branch-based methodology for contamination-resistant controlled history measurement, and (iii) a lineage-level analysis showing that an embedding-based semantic-proxy readout and a heuristic AP-sensitive presentation diagnostic can exhibit different patterns under matched histories. 2 Related Work Prior work extracts user attributes from dialogue logs [21], detects implicit persona for personalized generation [2], and uses personaaware prompting, profiles, and reflective memory in multi-session systems [9, 18, 22]. These approaches optimize personalization quality or consistency rather than the observability of user-conditioned regularity; we therefore treat the present work as evaluation design, not a personalization-improvement method. Long-horizon dialogue work shows that consistency remains difficult [6, 11], while long-term HRI emphasizes repeated interaction, personalization, and adaptation [ 3, 8]."
+    },
+    {
+      "id": "P2-4",
+      "title": "論文 p. 2",
+      "text": "Embodied field work has also linked personalized robot service to rapport, cooperation, and engagement [7]. This is not an embodied or naturalistic long-term deployment; its methodological relevance is distinguishing whether apparent continuity comes from user-conditioned semantic alignment, AP-shaped presentation, or external memory. Accordingly, before apparent continuity is attributed to personalization, external memory, or a user model, evaluation should separate matchedhistory effects, agent-side priors, and probe-induced contamination. 3 Problem Formulation We study personalization in LLM-based interactive systems not merely as a performance optimization problem, but as a measurement boundary concerning where UPO becomes observable as a response-level readout. In this paper, UPO refers operationally to user-side regularity inferred from dialogue history, context, and explicit instructions. It is not treated as a directly measured internal variable, a persistent user model, or a measure of stable human personality or identity."
+    },
+    {
+      "id": "P2-5",
+      "title": "論文 p. 2",
+      "text": "Instead, we estimate only its response-level readout by analyzing branch responses to fixed probe prompts after controlled history injection, rather than by directly analyzing user utterances alone. Here, within-lineage change refers to history-conditioned change in that response-level readout, whereas divergence refers to between-lineage dispersion across independently replicated lineages under matched conditions. This definition deliberately leaves construct validity bounded. A UPO readout can be partly confounded with stylistic regularization, prompt-induced formatting, or scenario-specific response conventions. Accordingly, the paper uses UPO as an operational analysis label and interprets the results as evidence about response-level history-conditioned regularities, not as evidence that the model has formed a validated or psychologically grounded representation of the user."
+    },
+    {
+      "id": "P2-6",
+      "title": "論文 p. 2",
+      "text": "This distinction leads to the following research questions: • RQ1: Does history-conditioned change in the response-level readout of UPO appear within a lineage under inter-lineage isolation? • RQ2: Do independently replicated lineages show measurable between-lineage dispersion even under the same controlled condition? • RQ3: How strongly does the AP prior constrain the operational UPO readout of history-conditioned variation? • RQ4: Are form-level and semantic-level readouts aligned, or do they reveal different aspects of the same operational UPO readout? The paper focuses on these questions in a controlled setting. 4 Method 4.1 Method overview and operational units We propose a controlled branch-based dialogue design that operationalizes the distinction between AP and UPO under inter-lineage isolation. The design goal is to test whether history-conditioned regularity remains observable when independent conversational threads are kept separate from one another and only within-thread history accumulation is allowed."
+    },
+    {
+      "id": "P2-7",
+      "title": "論文 p. 2",
+      "text": "Here, isolation is defined operationally over observable execution fields rather than as a claim about inaccessible provider-side internals. Alineageis one thread under a fixed language-conditionscenario combination; acheckpoint 𝑡∈ {𝑡 0, . . . , 𝑡10} is its state after the first 𝑡 fixed history pairs; and areplicateis one independent stochastic repetition of the same setting. At each checkpoint, we copy the lineage state, append one evaluation prompt as aprobe branch, and log itsbranch responseas arecord. Probe branches are never written back, enabling within-lineage measurement without contaminating later context."
+    },
+    {
+      "id": "P3-1",
+      "title": "論文 p. 3",
+      "text": "Persona-Isolated Evaluation of LLM-Based Dialogue Agents HAI ’26, November 16–19, 2026, Osaka, Japan Our primary comparisons use the full probe suite at 𝑡0, 𝑡5, and 𝑡10; denser intermediate checkpoints are included as a sensitivityoriented view rather than as the sole basis for the main claim. The main inferential unit is thelineagerather than the individual record, because multiple checkpoints and probes are repeated observations within the same lineage. This mitigates record-level pseudo-replication but does not increase the number of independent stochastic replicates. 4.2 Prompt layers and experimental conditions The protocol has two system-side layers. The sharedsession-control promptfixes language, confines context to the current lineage, and forbids fixed user-attribute assumptions. The optional AP prior adds no user attributes; it encourages structured responses, bounded clarification, explicit uncertainty, and caution against unsupported certainty. Language is invariant rather than part of the AP manipulation."
+    },
+    {
+      "id": "P3-2",
+      "title": "論文 p. 3",
+      "text": "Japanese uses direct translations preserving roles, structure, and constraints. The study uses four conditions: •C0: session-control prompt only, no injected history • C1: session-control prompt plus AP prior, no injected history •C2: session-control prompt plus injected history • C3: session-control prompt plus AP prior and injected history The primary controlled contrast isC2 versus C3: both receive the same fixed history in each language-scenario-checkpoint-probe cell and differ only in AP presence, so this is not a contrast between AP-generated and no-AP-generated histories.C0 versus C1provides the no-history AP baseline at 𝑡0, and Table 1 summarizes controlled and varied factors. The fixed synthetic histories support within-experiment attribution but do not establish validity for naturalistic, longitudinal, or human-generated interaction. Table 2 shows the English session-control and AP prompt layers used in the protocol."
+    },
+    {
+      "id": "P3-3",
+      "title": "論文 p. 3",
+      "text": "4.3 Isolation scope, scenarios, checkpoints, and sample size The termsession isolationdenotes operationalinter-lineage isolation: different lineages are generated independently, other lineages are not model inputs, and observable runtime fields show no evidence of cross-lineage memory access.Within-lineage history accumulationremains intentional because we measure response change as controlled history is added within a lineage. This study comprises parallel Japanese and English tracks with the same conditions, checkpoints, and probe allocation as a bounded robustness check, not a claim about general cross-linguistic persona effects or cultural differences. It tests whether the same operational readout structure yields qualitatively comparable patterns under two language settings, while leaving causal explanations of language differences for future work. We therefore report languagespecific results rather than pooling the two tracks into a single cross-lingual metric space."
+    },
+    {
+      "id": "P3-4",
+      "title": "論文 p. 3",
+      "text": "The Japanese and English scenario histories and probe prompts were constructed as semantically matched parallel materials that preserve scenario intent and probe function rather than enforce word-by-word translation equivalence. For C2 and C3, we used three fixed scenario families: Research (R), Development (D), and Ideation (I). Research emphasizes definitions, validity, and reproducibility-oriented planning; Development emphasizes minimal implementation, traceable changes, and procedural decomposition; Ideation emphasizes broad exploration before narrowing. Each scenario consists of a fixed history of ten userassistant pairs. Table 3 shows one representative English exchange from each family; the experiment injects the full ten-pair history in the corresponding language track. The no-history conditions C0 and C1 are evaluated only at 𝑡0. The history conditions C2 and C3 are evaluated from 𝑡0 to 𝑡10, where 𝑡0 denotes the clean initial state before history injection and 𝑡10 denotes the state after all ten history pairs have been injected."
+    },
+    {
+      "id": "P3-5",
+      "title": "論文 p. 3",
+      "text": "Probes are administered using the full 12-probe suite at 𝑡0, 𝑡5, and 𝑡10, and a core 4-probe subset at𝑡 1–𝑡4 and𝑡 6–𝑡9. Each language track therefore contains40lineages:5replicated lineages each in C0 and C1, and3scenarios × 5replicated lineages for each of C2 and C3. Under this checkpoint and probe allocation, the design yields2160records per language. Within a fixed language-condition-scenario combination, replicates differ only by stochastic sampling under otherwise identical prompts, history, and configured generation settings. 4.4 Probe suite, runtime logging, and record inclusion The probe suite elicits projected differences in explanation style, prioritization, clarification, contradiction handling, and response structure; it is not itself a definition of UPO. At each checkpoint, one probe is appended to a copied lineage and the branch response is evaluated; Table 5 lists all 12 probes. We use the full suite at 𝑡0, 𝑡5, and 𝑡10, and the core subset 𝑝03, 𝑝04, 𝑝07, and 𝑝10 at intermediate checkpoints."
+    },
+    {
+      "id": "P3-6",
+      "title": "論文 p. 3",
+      "text": "This core was selected in a separate bilingual rerun using a predefined cross-language and cross-scenario stability criterion on embedding-space deltas for a lower-cost dense view. Intermediate trajectories are therefore sensitivity-oriented; primary cumulative 𝑡0 →𝑡 10 comparisons use the full suite and do not depend on core selection. Responses were generated through non-interactive Codex CLI calls using OpenAI’s GPT-5.1 Codex mini model [13]. We fixed the temperature at0 .2and the maximum token budget at1024; embedding evaluation used text-embedding-3-large. Every record stores the lineage identifier, language track, condition, scenario, checkpoint, probe identifier, evaluation-branch flag, evaluation status, and runtime audit fields, including transport version and executioncontext flags for ephemeral execution, isolated working directory, and disabled tools, web access, and cross-session memory. All quantitative tables and figures in this paper are computed from these logged probe responses."
+    },
+    {
+      "id": "P3-7",
+      "title": "論文 p. 3",
+      "text": "All injected histories and probe prompts are scripted synthetic study materials; no human-subject dialogue logs or personal data are included in the experiment. Before evaluation, we apply two audits. Thesession isolation auditchecks the expected branch structure, the expected historyinjection pattern, the absence of cross-lineage memory access in observable runtime fields, and the no-tool/no-web execution footprint. Thetarget-language auditchecks whether each response conforms to the designated language track."
+    },
+    {
+      "id": "P4-1",
+      "title": "論文 p. 4",
+      "text": "HAI ’26, November 16–19, 2026, Osaka, Japan Satoshi Koda, Hiroshi Someya, and Kagayaki Kuroda Table 1: Condition matrix and dataset counts for the matched-history AP contrast. Counts are shown per language track; the full dataset contains4320records and80lineages, with2160records and40lineages in each of Japanese and English. Histories in C2 and C3 are fixed synthetic study materials and are matched across the AP/no-AP contrast. Condition AP prior Injected history Evaluation scope Records/lineages per language Primary role C0 absent absent𝑡 0, no scenario 60 / 5 no-history invariant baseline C1 present absent𝑡 0, no scenario 60 / 5 AP-only no-history baseline C2 absent present D/I/R,𝑡 0–𝑡10 1020 / 15 history-only matched input for C3 contrast C3 present present D/I/R,𝑡 0–𝑡10 1020 / 15 AP + matched-history condition Table 2: Exact English system prompts used in the experiment. The Japanese track used a direct translation with the same structure and constraints. Session-control prompt AP prior # Role You are a dialogue support agent. # Response language Respond in English."
+    },
+    {
+      "id": "P4-2",
+      "title": "論文 p. 4",
+      "text": "# Allowed context Use only the current session history. Do not refer to other sessions, other channels, or external memory. # User inference Do not make fixed assumptions about the user’s attributes or preferences. Any adaptation must be based only on the dialogue history within the current session. # Response generation Be accurate and logical. Organize the response with headings or bullet points when useful, and keep it concise and clear. Do not overclaim; state assumptions or limits when needed. # Clarifying questions Ask at most two clarifying questions, and only when necessary. # Response stance Avoid excessive speculation and unsupported certainty. Prioritize a structure that is easy for the user to follow. Table 3: Representative user-assistant exchanges from the English scenario histories used in the experiment. These examples illustrate scenario intent; they are not probe outputs or result examples. Scenario Sample user-assistant dialogue pairs Research User: “I want to tighten the research plan again today."
+    },
+    {
+      "id": "P4-3",
+      "title": "論文 p. 4",
+      "text": "First, organize how the objectives map onto the research questions. ” Assistant: “Understood. I will first align the study objectives, then the research questions, and finally the hypotheses. ” Development User: “Please break the implementation task into smaller pieces. I want the smallest working version first rather than a big initial build. ” Assistant: “Understood. I will start with the smallest end-to-end path, then move to configuration, and finally extend the evaluation layer. ” Ideation User: “I want to generate a wide range of new research ideas. Please do not narrow it down to one option too early. ” Assistant: “Understood. I will expand the candidate space first and narrow it only after we have comparison axes. ” Table 4: Controlled experimental design."
+    },
+    {
+      "id": "P4-4",
+      "title": "論文 p. 4",
+      "text": "Aspect Specification Languages Japanese, English Conditions C0, C1, C2, C3 Scenarios R, D, I History 10 user-assistant pairs Checkpoints𝑡 0–𝑡10 Probes 12 probes at𝑡 0,𝑡 5,𝑡 10;𝑝 03,𝑝 04,𝑝 07,𝑝 10 at𝑡 1–𝑡4 and𝑡 6–𝑡9 Replicates 5 Sample size 40 lineages, 2160 records per language 4.5 Deterministic reconstructed-context audit Before analysis, we reconstructed C2/C3 request contexts from the versioned system and AP prompts, probe suites, scenario JSONL files, configuration, and row-level metadata across408unique templates and2040replicate-expanded C2/C3 pair rows. History seed, injected text, checkpoint context, non-AP context, and non-AP prompt layers had zero mismatches, with no probe write-back signs. Observable reconstructed inputs therefore differ by AP, not history content or probe contamination. 4.6 Evaluation representations and statistical summaries We use two complementary response representations. The rulebased representation uses seven features: response length, sentence count, bullet lines, numbered lines, question marks, uncertainty markers, and caution markers."
+    },
+    {
+      "id": "P4-5",
+      "title": "論文 p. 4",
+      "text": "For response𝑥, let (𝑓 1 (𝑥), . . . , 𝑓 7 (𝑥)) denote these feature counts, and let 𝑠𝑘 denote the corresponding heuristic scale constants, where 𝑘 indexes the seven feature dimensions. The rule-based distance is 𝑑rule (𝑥, 𝑦)= vt∑︁ 𝑘 \u0012 𝑓𝑘 (𝑥) −𝑓 𝑘 (𝑦) 𝑠𝑘 \u0013 2 .(1) The seven scale constants are400,8,6,4,3,4, and4, respectively; they were chosen heuristically, fixed before the main experiment, and used to place heterogeneous feature counts on roughly comparable ranges. This rule-based representation is a study-specific heuristic composite for response form and communicative structure, informed by prior work on stylometric feature engineering, dictionary-based text analysis, and hedge or uncertainty cue analysis [5, 12, 17, 19, 23]. Because the AP directly encourages response structure, bounded clarification, uncertainty marking, and caution, several components are manipulation-sensitive by design. We therefore treat the composite only as an exploratory AP-sensitive presentation diagnostic, not as a validated construct measure or semantic outcome."
+    },
+    {
+      "id": "P4-6",
+      "title": "論文 p. 4",
+      "text": "The second representation uses embedding cosine distance 𝑑emb (𝑥, 𝑦)=1−cos( ˆ𝑒(𝑥), ˆ𝑒(𝑦)),(2) where ˆ𝑒(𝑥) is the L2-normalized embedding of response 𝑥; we use this as a semantic-proxy readout in the sentence-embedding and semantic-textual-similarity tradition [1, 15]. We constructed 16 handcrafted diagnostic pairs, with two pairs for each category in each language: identity pairs used exactly the same text; paraphrase pairs were designed to preserve the intended content while changing wording; style-shift pairs were designed to preserve the intended content while changing formatting or response structure;"
+    },
+    {
+      "id": "P5-1",
+      "title": "論文 p. 5",
+      "text": "Persona-Isolated Evaluation of LLM-Based Dialogue Agents HAI ’26, November 16–19, 2026, Osaka, Japan Table 5: Full probe suite used in the paper. ID Dimension Probe question summary 𝑝01 Adaptation Explain “confounding factors” briefly for an undergraduate hearing the topic for the first time. 𝑝02 Priority State a priority rule for an urgent next-day task versus an important infrastructure task. 𝑝03 Uncertainty Which additional information should be checked first before accepting a proposal with 30% success probability? 𝑝04 Contradiction How should conflicting claims about “more data” versus “more noise” be integrated? 𝑝05 Structure Answer in three steps how an experimental logging policy should be organized. 𝑝06 Tolerance Give a conditional answer about trading off speed against strict correctness during experiments. 𝑝07 Assumptions What assumptions are required for the claim that an LLM necessarily forms UPO? 𝑝08 Style Explain how the same experimental result should be written for experts versus novices."
+    },
+    {
+      "id": "P5-2",
+      "title": "論文 p. 5",
+      "text": "𝑝09 Values Rank reproducibility, novelty, and implementation ease at an early research stage. 𝑝10 Clarification In what order should clarification questions be asked for an ambiguous request? 𝑝11 Revision What level of evidence is needed before retracting a past judgment? 𝑝12 Recheck Repeat the task-priority question later in the trajectory to test within-lineage stability. Table 6: Deterministic reconstructed-context audit for the C2/C3 contrast. The audit reconstructs contexts from versioned files and row metadata; raw realized API request payload hashes were not logged. Audit item Result Unique context templates 408 Replicate-expanded C2/C3 pair rows 2040 History-seed mismatches 0 Injected-history-text mismatches 0 Checkpoint-context mismatches 0 Non-AP reconstructed-context mismatches 0 Prompt-layer mismatches beyond AP 0 Probe write-back signs 0 and semantic-shift pairs changed a substantive preference or risk stance while keeping the response form broadly similar."
+    },
+    {
+      "id": "P5-3",
+      "title": "論文 p. 5",
+      "text": "The intended qualitative relations were zero distance on both readouts for identity pairs, relatively small embedding distance for paraphrases, larger rule distance for style shifts than for paraphrase or semantic-shift pairs, and non-zero embedding distance with near-zero rule distance for semantic shifts. Identity pairs had zero distance on both readouts. Across both languages, style-shift rule distances (0.560–1.100) exceeded those for paraphrase and semanticshift pairs (0–0.280), while semantic-shift pairs had near-zero rule distance (0–0.010) but non-zero embedding distance (0.160–0.236). Embedding distances did not cleanly order the three non-identity categories. These pairs were used only as a qualitative diagnostic and were not used to estimate scale constants, select thresholds, or define a classifier or decision rule. We use cumulative within-lineage shift Δwithin, adjacent transition mean, between-lineage divergence 𝐵between, and group mean difference 𝛿."
+    },
+    {
+      "id": "P5-4",
+      "title": "論文 p. 5",
+      "text": "Cumulative shift averages first-to-last distances per lineage-probe trajectory; adjacent means average checkpoint transitions; and between-lineage divergence averages distinct-lineage pairs in matched language-condition-scenario-checkpoint-probe cells. We report lineage-level percentile-bootstrap 95% confidence intervals (5,000resamples), two-sided condition-label permutation tests (up to20 ,000), and Hedges’𝑔. Splits are exact within the permutation budget and otherwise use seeded shuffles with base seed 42and derived block seeds. Permutation 𝑝-values are descriptive without family-wise correction, emphasizing direction, confidence intervals, and cross-metric consistency. The rule-only cumulative random-pair baseline breaks same-lineage 𝑡0/𝑡10 pairing while preserving language, condition, scenario, and probe. No embedding random-pair baseline is reported because vectors were not stored and recomputation requires new embedding calls."
+    },
+    {
+      "id": "P5-5",
+      "title": "論文 p. 5",
+      "text": "Branch-only probes, pre-aggregation isolation and language audits, separate readouts, and lineage-level inference support the within-study interpretation of history-conditioned variation without establishing UPO as an internal state. The rule representation remains a heuristic presentation diagnostic and the embedding representation a semantic proxy; neither directly validates user modeling. 5 Results 5.1 Audit and record quality The final Japanese and English response sets passed both the isolation audit and the target-language audit, with no issues in either track. In the remainder of the Results section and in the tables, JA and EN denote the Japanese and English tracks, respectively; combined labels such as JA/D and EN/rule denote language-scenario and language-metric cells. The isolation audit is an operational runtime audit over recorded execution fields rather than a direct proof about inaccessible backend internals [14, 16]."
+    },
+    {
+      "id": "P5-6",
+      "title": "論文 p. 5",
+      "text": "The target-language audit is likewise a lightweight conformity filter rather than a full language-identification benchmark [10]: in JA conditions, outputs with ASCII-alpha ratio ≥ 0.5are flagged as non-target, whereas in EN conditions, outputs with Japanese-character ratio ≥ 0.2are flagged. Concretely, the isolation audit checks evaluation-branch flags, disabled cross-lineage memory access, the expected historyinjection pattern, and no-tool/no-web ephemeral execution fields. Each language track contributes2160responses over40lineages. 5.2 Dense checkpoint trajectory summaries We interpret history-conditioned differences as observable when lineage-level contrasts show a consistent direction, with uncertainty also reported at the lineage level. The central contrast is C2 versus C3, namely history-conditioned variation without and with the AP prior. Table 7 summarizes local transition means and cumulative within-lineage shift Δwithin. We observe two patterns."
+    },
+    {
+      "id": "P5-7",
+      "title": "論文 p. 5",
+      "text": "First, embedding distance is smaller under C3 than under C2 for both the adjacent mean and the full cumulative mean in both languages, with a clearer separation in Japanese and a directionally similar but weaker pattern in English. Second, the rule-based metric does not contract in the same way: in Japanese it is larger under C3 for"
+    },
+    {
+      "id": "P6-1",
+      "title": "論文 p. 6",
+      "text": "HAI ’26, November 16–19, 2026, Osaka, Japan Satoshi Koda, Hiroshi Someya, and Kagayaki Kuroda both adjacent and cumulative summaries, whereas in English the adjacent mean is nearly unchanged and only the cumulative mean becomes somewhat smaller under C3. Table 8 reports a direct lineage-level comparison for the full 𝑡0 →𝑡 10 cumulative shift, expressed as the group mean difference 𝛿 over cumulative Δwithin. The embedding deltas are negative in both languages. The Japanese result shows the larger and more clearly separated cumulative difference ( 𝛿=− 0.039172, 95% CI [−0.063016,− 0.015538], 𝑝perm = 0.004600, 𝑔=− 1.115294). The English result remains directionally similar but weaker and borderline in this sample (𝛿=− 0.029450, 95% CI [−0.057582,− 0.002150], 𝑝perm = 0.056347, 𝑔=− 0.709763)."
+    },
+    {
+      "id": "P6-2",
+      "title": "論文 p. 6",
+      "text": "The rule-based results split in two different ways: Japanese is the directional exception, with a positive cumulative delta after aggregation across scenarios under C3, whereas English remains descriptively negative but highly uncertain because the aggregated estimate mixes scenarios with very different magnitudes. We therefore treat JA/rule and EN/rule as language- and scenario-sensitive communicative-presentation diagnostics rather than as strong pooled AP effects. The condition-label permutation tests in Table 8 use lineagelevel summaries rather than individual probe responses as independent samples. For the rule-based readout only, we also computed a random-pair baseline that breaks same-lineage 𝑡0 →𝑡 10 pairing while preserving language, condition, scenario, and probe."
+    },
+    {
+      "id": "P6-3",
+      "title": "論文 p. 6",
+      "text": "The pooled rule-based observed deltas were close to the means of the random-pair null distributions (JA:0 .200197observed versus 0.208921null mean; EN: −0.194894observed versus −0.170871null mean), reinforcing a cautious interpretation of these rule results as exploratory presentation diagnostics rather than as strong evidence of same-lineage continuity. We therefore make no corresponding embedding random-pair baseline claim. The response-length correlations and component-omission results reported below provide an additional sensitivity check on this interpretation. Figure 1 shows that the embedding pattern is visually consistent across checkpoints. Because the dense intermediate trajectory uses the cost-reducing core probe subset, it should be read as a sensitivity-oriented checkpoint trace rather than as a full-probe estimate at every step. Within that dense trace, the C3 mean stays below the C2 mean at every adjacent transition from 𝑡0 →𝑡 1 through 𝑡9 →𝑡 10 in both Japanese and English."
+    },
+    {
+      "id": "P6-4",
+      "title": "論文 p. 6",
+      "text": "In our data, this indicates smaller embedding-space drift under the AP prior throughout the trajectory rather than only at a single late checkpoint. The cumulative 𝑡0 →𝑡 10 means follow the same direction, so the dense view and the full-trajectory summary are mutually consistent. Figure 2 provides the complementary presentation-feature view needed to interpret the embedding-space result. In Japanese, C3 is larger across both adjacent and cumulative rule-based summaries. Because the composite overlaps with AP instructions and response length, this pattern does not identify a unique mechanism and may reflect direct AP compliance, length change, or both. In English, the trajectories are closer and change sign by summary level. Overall, the rule diagnostic does not show the same checkpoint-wise contraction as the embedding readout. 5.3 Baseline and between-lineage divergence The no-history baseline tests whether AP changes response geometry even before any scenario history is injected. Table 7 reports the Figure 1: Dense adjacent checkpoint trajectories in embedding space."
+    },
+    {
+      "id": "P6-5",
+      "title": "論文 p. 6",
+      "text": "Lines show condition means; error bars show bootstrap 95% confidence intervals. In both Japanese and English, the C3 mean remains below the C2 mean at every adjacent step, indicating smaller embedding-space drift under the AP prior in this setting. Figure 2: Dense adjacent checkpoint trajectories in rule-based space. Lines show condition means; error bars show bootstrap 95% confidence intervals. Japanese shows stronger early-half movement under C3, whereas English remains mixed across phases. condition-level 𝐵between means in its lower panel. At baseline, C1 is more divergent than C0 in rule-based space in both languages, but less divergent in embedding space. Figure 3 extends this comparison across checkpoints by plotting the history-conditioned delta trajectory (C3−C2) . In that view, the checkpoint-level embedding deltas remain negative at 𝑡0, 𝑡5, and 𝑡10 in Japanese (−0.031, −0.024, and −0.027); the same direction also dominates in English, though later checkpoints move closer to zero."
+    },
+    {
+      "id": "P6-6",
+      "title": "論文 p. 6",
+      "text": "Within this broadly negative Japanese embedding profile, the strongest local dip appears at 𝑡7 (−0.069). We report this checkpoint descriptively rather than as a standalone causal result, because the present data do not isolate which specific history element is responsible. These baseline results clarify that the AP-associated reduction in dispersion is specific to the embedding-space readout. Both the no-history baseline and the history conditions point toward smaller between-lineage embedding-space dispersion under AP, whereas the heuristic presentation features often show increased divergence. Figure 3 helps explain why the EN/rule result aggregated across scenarios is nearly tied (1.223for C2 and1 .244for C3): the checkpoint-level deltas reverse sign across phases rather than remaining consistently close to zero. We therefore read EN/rule between-lineage behavior as phase- and scenario-dependent cancellation rather than as evidence of no effect."
+    },
+    {
+      "id": "P7-1",
+      "title": "論文 p. 7",
+      "text": "Persona-Isolated Evaluation of LLM-Based Dialogue Agents HAI ’26, November 16–19, 2026, Osaka, Japan Table 7: Within-lineage trajectory means and conditionlevel between-lineage divergence. Adjacent means refer to checkpoint-to-checkpoint transitions; cumulative means refer to the full𝑡 0-to-𝑡10 shift. Within-lineage trajectory means (history conditions) Language Metric Adjacent C2 Adjacent C3 Cumulative C2 Cumulative C3 JA Rule 1.129 1.195 1.240 1.441 JA Embedding 0.236 0.203 0.269 0.230 EN Rule 1.455 1.453 2.307 2.112 EN Embedding 0.230 0.207 0.262 0.233 Condition-level𝐵 between means Language Metric C0 C1 C2 C3 JA Rule 0.798 1.051 1.023 1.125 JA Embedding 0.232 0.169 0.217 0.184 EN Rule 0.726 0.809 1.223 1.244 EN Embedding 0.192 0.179 0.213 0.193 Figure 3: History-conditioned between-lineage delta trajectories (C3−C2 ) across 𝑡0 . . . 𝑡10. Error bars show bootstrap 95% confidence intervals. Embedding deltas remain mostly negative, whereas rule-based deltas, especially in English, reverse sign across checkpoints."
+    },
+    {
+      "id": "P7-2",
+      "title": "論文 p. 7",
+      "text": "5.4 Scenario-wise cumulative shifts A scenario-wise view clarifies this pattern. Figure 4 shows that embedding cumulative drift is smaller under C3 for every scenariolanguage cell: JA/D, JA/I, JA/R, EN/D, EN/I, and EN/R all keep the same 𝐶3 <𝐶 2direction. The largest absolute cumulative embedding shift still differs by language, with Japanese highest in the development-oriented scenario (D:0 .299 → 0.263) and English highest in the research-oriented scenario (R:0.322→0.276). The rule-based layer is less uniform. In Japanese, the scenariowise deltas are positive in all three cases ( +0.243in D, +0.246in I, and +0.112in R), so JA/rule is not a single anomalous cell but a language-specific directional exception. In English, by contrast, the scenario-wise deltas change sign ( +0.057in D, −0.188in I, and −0.453in R). English rule-based cumulative values also differ greatly in absolute scale across scenarios, with the research scenario dominating the magnitude. This is the main reason the EN/rule cumulative comparison aggregated across scenarios has such a wide confidence interval."
+    },
+    {
+      "id": "P7-3",
+      "title": "論文 p. 7",
+      "text": "A component-level check motivates caution for the rule-based layer. Response length strongly contributes to the full rule-based Figure 4: Scenario-wise cumulative within-lineage shift from 𝑡0 to 𝑡10. Grouped bars show condition means; error bars show bootstrap 95% confidence intervals. Embedding drift is lower under C3 in every scenario-language cell, whereas rule-based differences remain scenario-dependent and are largest in research-oriented histories. composite at the lineage level (JA/ALL Pearson’s 𝑟= 0.970562; EN/ALL Pearson’s𝑟= 0.999030). In Japanese, the pooled rule delta remains positive when any single component is omitted. In English, omitting character count changes the pooled rule delta from −0.194894to +0.018185, reversing its sign. Thus, the rule-based results are best treated as exploratory presentation diagnostics, with substantial length sensitivity, rather than as semantic evidence parallel to the embedding result."
+    },
+    {
+      "id": "P7-4",
+      "title": "論文 p. 7",
+      "text": "Together, these checks support treating the rule composite as a length-sensitive presentation diagnostic rather than as semantic evidence or strong evidence of same-lineage continuity. We read the language difference as a provisional observation rather than a settled causal claim. The observed pattern varies across scenario, language track, and measurement layer, with the largest heterogeneity in the rule-based space. Taken together, these results address the four RQs as follows. RQ1: within-lineage historyconditioned change appears under inter-lineage isolation in both languages. RQ2: independently replicated lineages still show measurable between-lineage dispersion under matched conditions. RQ3: in this setting, AP presence is associated with smaller embeddingspace drift, but not with a uniform reduction across all variation. RQ4: form-level and semantic-level readouts are not fully aligned, because the rule-based and embedding results diverge by language and scenario. 6 Discussion We summarize three observations."
+    },
+    {
+      "id": "P7-5",
+      "title": "論文 p. 7",
+      "text": "First, history-conditioned change remains observable within isolated lineages without explicit shared cross-session memory. Second, AP presence can be associated with smaller embedding-space drift while coinciding with larger values in the rule-based presentation diagnostic. Third, the consistent 𝐶2 >𝐶 3embedding pattern across adjacent, cumulative, checkpoint-delta, and scenario summaries supports smaller drift under AP in this setting, with clearer separation in Japanese"
+    },
+    {
+      "id": "P8-1",
+      "title": "論文 p. 8",
+      "text": "HAI ’26, November 16–19, 2026, Osaka, Japan Satoshi Koda, Hiroshi Someya, and Kagayaki Kuroda Table 8: Lineage-level comparison of cumulative𝑡 0 →𝑡 10 shift (𝛿=C3−C2). Language Metric C2 mean C3 mean𝛿95% CI𝑝 perm 𝑔 JA Rule 1.240 1.441 +0.200 [-0.119, +0.511] 0.235 +0.428 JA Embedding 0.269 0.230 -0.039 [-0.063, -0.016] 0.005 -1.115 EN Rule 2.307 2.112 -0.195 [-1.331, +0.935] 0.745 -0.115 EN Embedding 0.262 0.233 -0.029 [-0.058, -0.002] 0.056 -0.710 and a weaker but directionally similar pattern in English, while the rule layer remains language- and scenario-dependent. Smaller embedding drift is compatible with at least three interpretations: greater semantic consistency, stronger AP-induced regularization, or damped responsiveness to accumulated history. The matched-history design identifies the direction of the embeddingproxy difference but does not distinguish among these explanations or establish how users would perceive it."
+    },
+    {
+      "id": "P8-2",
+      "title": "論文 p. 8",
+      "text": "The rule-based diagnostic therefore qualifies the embeddingspace result rather than contradicting it: the two readouts show different AP-associated patterns rather than a single scalar amplification or suppression. Because the rule-based representation is partly sensitive to response structure, formatting, and languagespecific conventions, the Japanese-English difference should not be read as a pure difference in underlying history-conditioned variation. This distinction may matter for adaptive human-agent interaction when dialogue continuity is evaluated as a single notion of adaptation even though semantic-proxy drift and communicative presentation may change differently. The present design separates these targets by holding histories constant, manipulating AP independently, and reading out semantic versus presentation-level change with different metrics. The branch-based design also reduces measurement contamination by moving probes into side branches and keeping the main lineage untouched."
+    },
+    {
+      "id": "P8-3",
+      "title": "論文 p. 8",
+      "text": "The present protocol supports attribution through branch-only probes, matched histories, and separate embedding and presentation readouts; evaluation across models, AP families, and interactive human studies remains future work. 7 Limitations Several limitations remain. This study uses one provider/model, a non-interactive CLI runtime, and five stochastic replicates per scenario-condition cell; other models, interfaces, memory implementations, decoding configurations, and larger samples remain untested. The AP family is one structured-and-cautious instruction set, and lineage inference mitigates record-level pseudo-replication without increasing the number of independent stochastic replicates. Checkpoints 𝑡0–𝑡10 are injected-history states rather than observations from real-time sessions, multi-session field interactions, or user change over time. UPO is an operational response-level construct, not an observed internal state, durable memory representation, or stable personality."
+    },
+    {
+      "id": "P8-4",
+      "title": "論文 p. 8",
+      "text": "Histories and probes are synthetic, and no human judgments of consistency, presentation, adaptation, or personalization were collected. The reconstructed-context audit lacks raw API payload verification;top_p and provider-side seeds or stochastic states were not logged. Raw embedding vectors were not retained, so no embedding random-pair baseline was recomputed. The rule metric is heuristic, length-sensitive, and partly overlaps AP instructions. Finally, the bilingual comparison uses semantically matched parallel materials as a bounded robustness check, not a general Japanese-English or cultural claim. 8 Conclusion This paper treated personalization as a controlled measurement problem by examining where history-conditioned user-side regularity becomes observable."
+    },
+    {
+      "id": "P8-5",
+      "title": "論文 p. 8",
+      "text": "With the AP/UPO distinction and branchbased lineages, history-conditioned variation remained observable under inter-lineage isolation; AP presence was associated with smaller embedding-space drift, with clearer evidence in Japanese and weaker but directionally similar evidence in English, while the rule-based presentation diagnostic showed different, language- and scenario-dependent patterns. This divergence does not establish better personalization, user benefit, or a persistent user model. For adaptive human-agent interaction, continuity should be evaluated as an interaction between history-conditioned user-side regularity and the agent-side prior, rather than as a single scalar personalization variable. Future work should test this distinction in naturalistic multi-thread and embodied interaction settings. Acknowledgments Use of Generative AI.Generative AI assisted editing, audit integration, and formatting; the authors reviewed and remain responsible for all content and claims."
+    },
+    {
+      "id": "P9-1",
+      "title": "論文 p. 9",
+      "text": "Persona-Isolated Evaluation of LLM-Based Dialogue Agents HAI ’26, November 16–19, 2026, Osaka, Japan References [1] Daniel Cer, Mona Diab, Eneko Agirre, Iñigo Lopez-Gazpio, and Lucia Specia. 2017. SemEval-2017 Task 1: Semantic Textual Similarity Multilingual and Crosslingual Focused Evaluation. InProceedings of the 11th International Workshop on Semantic Evaluation (SemEval-2017). 1–14. doi:10.18653/v1/S17-2001 [2] Itsugun Cho, Dongyang Wang, Ryota Takahashi, and Hiroaki Saito. 2022. A Personalized Dialogue Generator with Implicit User Persona Detection. InProceedings of the 29th International Conference on Computational Linguistics. 367–377. [3] Norina Gasteiger, Mehdi Hellou, and Ho Seok Ahn. 2023. Factors for Personalization and Localization to Optimize Human–Robot Interaction: A Literature Review.International Journal of Social Robotics15, 4 (2023), 689–701. doi:10.1007/s12369-021-00811-8 [4] Jian Guan, Junfei Wu, Jia-Nan Li, Chuanqi Cheng, and Wei Wu. 2025. A Survey on Personalized Alignment: The Missing Piece for Large Language Models in Real- World Applications."
+    },
+    {
+      "id": "P9-2",
+      "title": "論文 p. 9",
+      "text": "InFindings of the Association for Computational Linguistics: ACL 2025. [5] Ken Hyland. 1998.Hedging in Scientific Research Articles. Pragmatics & Beyond New Series, Vol. 54. John Benjamins, Amsterdam. doi:10.1075/pbns.54 [6] Zixi Jia, Qinghua Liu, Hexiao Li, Yuyan Chen, and Jiqiang Liu. 2025. Evaluating the Long-Term Memory of Large Language Models. InFindings of the Association for Computational Linguistics: ACL 2025. [7] Min Kyung Lee, Jodi Forlizzi, Sara Kiesler, Paul Rybski, Jeremy Antanitis, and Siri Savetsila. 2012. Personalization in HRI: A Longitudinal Field Experiment. In Proceedings of the 7th Annual ACM/IEEE International Conference on Human-Robot Interaction. 319–326. doi:10.1145/2157689.2157804 [8] Iolanda Leite, Carlos Martinho, and Ana Paiva. 2013. Social Robots for Long-Term Interaction: A Survey.International Journal of Social Robotics5, 2 (2013), 291–308. doi:10.1007/s12369-013-0178-y [9] Dongshuo Liu, Zhijing Wu, Dandan Song, and Heyan Huang. 2025. A Persona- Aware LLM-Enhanced Framework for Multi-Session Personalized Dialogue Generation."
+    },
+    {
+      "id": "P9-3",
+      "title": "論文 p. 9",
+      "text": "InFindings of the Association for Computational Linguistics: ACL 2025. [10] Marco Lui and Timothy Baldwin. 2012. langid.py: An Off-the-shelf Language Identification Tool. InProceedings of the ACL 2012 System Demonstrations. 25–30. https://aclanthology.org/P12-3005/ [11] Adyasha Maharana, Dong-Ho Lee, Sergey Tulyakov, Mohit Bansal, Francesco Barbieri, and Yuwei Fang. 2024. LoCoMo: Evaluating Very Long-Term Conversational Memory of LLM Agents. InProceedings of the 62nd Annual Meeting of the Association for Computational Linguistics. [12] Ben Medlock and Ted Briscoe. 2007. Weakly Supervised Learning for Hedge Classification in Scientific Literature. InProceedings of the 45th Annual Meeting of the Association for Computational Linguistics. 992–999. https://aclanthology. org/P07-1125/ [13] OpenAI. 2026. GPT-5.1 Codex Mini. https://platform.openai.com/docs/models/ gpt-5.1-codex-mini. Accessed: 2026-03-24. [14] Thomas Pasquier, Xueyuan Han, Mark Goldstein, Thomas Moyer, David Eyers, Margo Seltzer, and Jean Bacon. 2017. Practical Whole-System Provenance Capture."
+    },
+    {
+      "id": "P9-4",
+      "title": "論文 p. 9",
+      "text": "InProceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security. 405–418. doi:10.1145/3127479.3129249 [15] Nils Reimers and Iryna Gurevych. 2019. Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks. InProceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP). 3982–3992. doi:10.18653/v1/ D19-1410 [16] Yogesh L. Simmhan, Beth Plale, and Dennis Gannon. 2005. A Survey of Data Provenance in e-Science.SIGMOD Record34, 3 (2005), 31–36. doi:10.1145/1084805. 1084812 [17] Efstathios Stamatatos. 2009. A Survey of Modern Authorship Attribution Methods. Journal of the American Society for Information Science and Technology60, 3 (2009), 538–556. doi:10.1002/asi.21001 [18] Zhen Tan, Jun Yan, I-Hung Hsu, Rujun Han, Zifeng Wang, Long Le, Yiwen Song, Yanfei Chen, Hamid Palangi, George Lee, Anand Rajan Iyer, Tianlong Chen, Huan Liu, Chen-Yu Lee, and Tomas Pfister. 2025."
+    },
+    {
+      "id": "P9-5",
+      "title": "論文 p. 9",
+      "text": "In Prospect and Retrospect: Reflective Memory Management for Long-term Personalized Dialogue Agents. InProceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers). 8416–8439. [19] Yla R. Tausczik and James W. Pennebaker. 2010. The Psychological Meaning of Words: LIWC and Computerized Text Analysis Methods.Journal of Language and Social Psychology29, 1 (2010), 24–54. doi:10.1177/0261927X09351676 [20] Yu-Min Tseng, Yu-Chao Huang, Teng-Yun Hsiao, Wei-Lin Chen, Chao-Wei Huang, Yu Meng, and Yun-Nung Chen. 2024. Two Tales of Persona in LLMs: A Survey of Role-Playing and Personalization. InFindings of the Association for Computational Linguistics: EMNLP 2024. [21] Chien-Sheng Wu, Andrea Madotto, Zhaojiang Lin, Peng Xu, and Pascale Fung. 2020. Getting To Know You: User Attribute Extraction from Dialogues. InProceedings of the 12th Language Resources and Evaluation Conference. 581–589. [22] Jiarui Zhang. 2024. Guided Profile Generation Improves Personalization with Large Language Models."
+    },
+    {
+      "id": "P9-6",
+      "title": "論文 p. 9",
+      "text": "InFindings of the Association for Computational Linguistics: EMNLP 2024. [23] Rong Zheng, Jiexun Li, Hsinchun Chen, and Zan Huang. 2006. A Framework for Authorship Identification of Online Messages: Writing-Style Features and Classification Techniques.Journal of the American Society for Information Science and Technology57, 3 (2006), 378–393. doi:10.1002/asi.20316"
+    },
+    {
+      "id": "S01",
+      "title": "発表原稿 · Slide 1",
+      "text": "Thank you for the introduction. Good morning. My name is Satoshi Koda, and I'm from Tokai University. English is not my first language, so thank you for your patience. Today, I'll talk about how conversation history changes an agent's responses. We also ask how the agent's instructions affect these changes."
+    },
+    {
+      "id": "S02",
+      "title": "発表原稿 · Slide 2",
+      "text": "A short answer may reflect the user's history, or instructions to be concise. We call the added agent instructions A P. U P O refers to the history-related pattern we observe in responses. It is not a direct measurement of a user model. Our broader goal is to test whether such patterns carry over to a new context or model. This paper takes the first step by observing and comparing them under controlled conditions."
+    },
+    {
+      "id": "S03",
+      "title": "発表原稿 · Slide 3",
+      "text": "We compare four conditions. C zero has no added A P and no injected history. C one adds A P, but has no history. C two has history without A P. C three has the same history with A P. Our main comparison is C two versus C three. The A P asks for structured, concise, and cautious responses. All conditions share a common system prompt."
+    },
+    {
+      "id": "S04",
+      "title": "発表原稿 · Slide 4",
+      "text": "We call one independent run under a fixed setting a lineage. For these controlled experiments, we add fixed pairs of user and assistant messages. At each checkpoint, we copy the conversation. We ask a fixed test question, called a probe, in that copy. The probe and its answer are never added back to the main conversation. This prevents the measurement from changing the later history. Each lineage is run independently, even when the same scripted history is used. The checkpoints shown here are before any history is added, after five pairs, and after ten pairs."
+    },
+    {
+      "id": "S05",
+      "title": "発表原稿 · Slide 5",
+      "text": "We use Japanese and English, with three scenarios: research, development, and ideation. C two and C three receive ten scripted pairs of user and assistant messages. There are forty lineages per language, with five repetitions for each setting. In total, we have eighty lineages and four thousand three hundred and twenty responses. We use twelve probes at the main checkpoints, and four at intermediate checkpoints. These are synthetic histories, not conversations from real participants."
+    },
+    {
+      "id": "S06",
+      "title": "発表原稿 · Slide 6",
+      "text": "We measure responses in two ways. Embedding distance is a rough measure of differences in meaning. It is one minus the cosine similarity between response embeddings. Rule-based distance measures the form of a response, using features such as length, lists, and expressions of uncertainty. We compare answers to the same probe before any history is added and after ten pairs. We summarize the changes within each lineage. The main unit in our statistical analysis is the lineage, rather than the individual response."
+    },
+    {
+      "id": "S07",
+      "title": "発表原稿 · Slide 7",
+      "text": "Here is the main embedding result. Gray bars show C two. Teal bars show C three. So, we are comparing conditions with and without A P, using the same history. In Japanese, the mean distance is zero point two six nine without A P and zero point two three zero with A P. In English, it is zero point two six two without A P and zero point two three three with A P. The evidence is clearer in Japanese. For English, the bootstrap interval excludes zero, but the permutation p-value is about zero point zero five six. We therefore describe the English evidence as weaker. These values measure distance, not accuracy."
+    },
+    {
+      "id": "S08",
+      "title": "発表原稿 · Slide 8",
+      "text": "The rule-based distance shows a different pattern for response form. The mean distance is larger with A P in Japanese, and slightly smaller in English. However, the confidence intervals for both differences include zero, so both comparisons are uncertain. The measure is also sensitive to response length. When we remove character count, the English difference changes sign. Some features are directly encouraged by the A P instructions. We therefore use this measure to examine response form, not to judge whether personalization is better."
+    },
+    {
+      "id": "S09",
+      "title": "発表原稿 · Slide 9",
+      "text": "We can still observe variation related to history within isolated lineages. Independent runs also differ under the same conditions. A P is associated with smaller embedding drift, with clearer evidence in Japanese. Response form does not show the same pattern. Together, these results support measuring meaning-related variation and response form separately."
+    },
+    {
+      "id": "S10",
+      "title": "発表原稿 · Slide 10",
+      "text": "Does smaller drift mean better personalization? Our results do not establish that. Responses may be more consistent in meaning. The A P may constrain them more strongly. Or the agent may be less responsive to the history. Our experiment cannot distinguish between these explanations. We also did not measure user satisfaction or benefit."
+    },
+    {
+      "id": "S11",
+      "title": "発表原稿 · Slide 11",
+      "text": "Our evidence has several limitations. We tested one model and one set of A P instructions. The histories were scripted, rather than natural long-term conversations. We did not collect human ratings. Our audit checked the execution logs and reconstructed contexts, but not the raw requests sent to the provider. Using two languages provides a limited check of robustness. A next step is to test more models and include human evaluation."
+    },
+    {
+      "id": "S12",
+      "title": "発表原稿 · Slide 12",
+      "text": "We provide a controlled design with matched histories and probes used only in separate branches of the conversation. This lets us compare agent instructions without the test questions changing the later history. Our results support evaluating meaning-related variation and response form separately. This is a first step in our research on U P O portability. It does not test portability or show that personalization is better. I would be happy to hear your feedback or discuss possible applications of this framework. Please feel free to contact me. Thank you."
+    },
+    {
+      "id": "S13",
+      "title": "発表原稿 · Slide 13",
+      "text": "These are the published cumulative contrasts from t zero to t ten. The confidence intervals use the percentile bootstrap at the lineage level. The permutation tests compare condition labels, and g is Hedges' effect size. The tests are descriptive, with no correction for multiple comparisons. For English, we should report the embedding interval and the permutation p-value together. We should not reduce them to a single label of significant or not significant."
+    },
+    {
+      "id": "S14",
+      "title": "発表原稿 · Slide 14",
+      "text": "The conditions without history help show that A P changes response geometry even before history is added. At baseline, embedding dispersion is lower with A P in both languages, while rule-based dispersion is higher. When history is added, the English rule-based means are close after aggregation. But the differences at individual checkpoints change sign. So, a small pooled difference does not establish that there is no effect."
+    },
+    {
+      "id": "S15",
+      "title": "発表原稿 · Slide 15",
+      "text": "The rule-based features partly overlap with what the A P explicitly asks the agent to do. The scales are heuristic constants, fixed before the main experiment. This diagnostic measure is highly sensitive to response length. Removing individual components does not make it a validated measure of user persona. The paper also reports that the pooled rule-based differences were close to the mean values of the random-pair baseline."
+    },
+    {
+      "id": "S16",
+      "title": "発表原稿 · Slide 16",
+      "text": "The deterministic audit reconstructed request contexts from versioned prompts, probe suites, scenario histories, configuration, and row metadata. The history and non-A P layers matched across four hundred and eight templates and two thousand and forty pairs, including all repetitions. We found no signs that probes had been written back to the main conversation. This supports the observable input contrast. But it is not a byte-level audit of the actual A P I payloads. The four core probes were selected in a separate bilingual rerun. The main comparison from t zero to t ten uses the full probe suite and does not depend on that selection."
+    },
+    {
+      "id": "S17",
+      "title": "発表原稿 · Slide 17",
+      "text": "These selected studies help place our contribution in the context of evaluation design. Persona research distinguishes role-playing from personalization. Research on long-term memory tests retention over long conversations. Field studies in human-robot interaction test how personalization affects people. Our experiment focuses on a narrower comparison at the response level."
+    }
+  ],
+  "title": "Persona-Isolated Evaluation of LLM-Based Dialogue Agents"
+}

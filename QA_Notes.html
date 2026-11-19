@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://api.github.com; worker-src 'self'; img-src 'none'; base-uri 'none'; form-action 'none'">
+<!--SESSION--><title>Q&A Notes</title>
+<style>
+body{margin:0;background:#111821;color:#edf3fa;font:18px system-ui}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:25px}h2{font-size:16px;color:#aebed0;margin-top:24px}#question{box-sizing:border-box;width:100%;padding:15px;border:1px solid #71809a;border-radius:8px;background:#202c3c;color:white;font-size:22px}button{background:#26384d;color:#edf3fa;border:1px solid #64758a;border-radius:7px;padding:10px;margin:4px;cursor:pointer}button:hover,button:focus{background:#385778}button:disabled{opacity:.55;cursor:wait}#generate{border-color:#8ed5e5}small,.muted{color:#aebed0;font-size:14px}.card{background:#1b2735;border:1px solid #415671;border-radius:10px;padding:22px;margin:14px 0}.answer{font-size:28px;line-height:1.5}.confirm{color:#8ed5e5;font-size:20px}.ja{color:#c4ced9;line-height:1.7}#choices button{text-align:left}#list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}details{margin-top:18px}summary{cursor:pointer;padding:10px}.warning{color:#ffd893}blockquote{white-space:pre-wrap;overflow-wrap:anywhere;margin:10px;border-left:3px solid #8ed5e5;padding:12px;line-height:1.6;font-size:15px}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}label{font-size:14px}.importer label{display:block;margin:12px 0}.importer textarea,.importer input[type=text],.importer input[type=url]{box-sizing:border-box;width:100%;background:#202c3c;color:#edf3fa;border:1px solid #71809a;border-radius:8px;padding:10px;font:16px system-ui}.importer-qa-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.importer-qa-fields button{grid-column:1 / -1}.importer-files{max-height:220px;overflow:auto}.importer-files label{margin:4px 0;overflow-wrap:anywhere}.importer input[type=file]{display:block;margin-top:5px;max-width:100%}@media(max-width:600px){main{padding:12px}.answer{font-size:23px}.importer-qa-fields{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>Q&A Notes</h1>
+<div class="controls"><button id="useHai">HAI論文で試す</button><button id="useOwn">自分の資料で試す</button><button id="deleteOwn" hidden>登録した資料を削除</button><small id="materialTitle"></small></div>
+<div id="ownImport" hidden></div>
+<p id="status" class="muted" role="status">起動状態を確認しています…</p>
+<p id="budgetStatus" class="muted" role="status"></p>
+<section class="card"><div class="controls"><label>質問の言語 <select id="audioLanguage"><option value="en">English</option><option value="ja">日本語</option><option value="both">英語＋日本語</option></select></label><button id="record">録音開始</button><button id="recordStop" disabled>停止して質問欄へ反映</button></div><p id="audioStatus" class="muted" role="status">録音中のマイク音声をOpenAI APIへ送ります。1回最大5分。回答生成は確認後のクリックで行います。</p><p id="liveTranscript" style="white-space:pre-wrap" aria-live="polite"></p></section>
+<textarea rows="3" id="question" aria-label="質問またはキーワード" placeholder="聞かれた質問を入力（日本語・英語） / Q01" autocomplete="off" maxlength="1500"></textarea>
+<p class="muted">/ で検索欄へ · Enter ですぐ判定 · Shift+Enter で改行 · Esc でクリア · Q番号は通信せず表示</p>
+<div class="controls"><label><input type="checkbox" id="auto">入力後に自動判定・生成</label><button id="generate">確認した質問で回答を表示</button><button id="reset">次の質問 / クリア</button></div>
+<p class="muted">自動判定・生成では質問・登録資料・想定問答をOpenAI APIへ送信します（API利用料がかかります）。生成した回答案は根拠を確認して使用してください。</p>
+<div id="choices"></div><div id="result" aria-live="polite" aria-atomic="true"></div>
+<details><summary>聞き返し・確認のフレーズ</summary><div id="fallback"></div></details>
+<details><summary>用意した質問を選ぶ</summary><div id="list"></div></details>
+<p class="muted">発表時は拡張画面でスライドだけを投影し、この画面は手元に表示してください。</p>
+</main><script src="importer.js"></script><script>let DATA={"title":"Persona-Isolated Evaluation of LLM-Based Dialogue Agents","qa":[{"id":"Q01","title":"UPO の意味","cues":"UPO / user persona / personality / internal model","question":"What exactly do you mean by UPO?","confirm":"Are you asking how we define U P O?","answer":"In this paper, U P O is an operational name for a response pattern associated with conversation history. We read it from the agent's responses. We do not directly measure a person's personality or the model's internal representation of a user.","ja":"UPO は、会話履歴に関連する応答パターンの操作的な呼び名です。応答から読み取りますが、人の性格や内部のユーザー表現を直接測ったものではありません。","source":"論文 Sections 1 と 3","slide":2},{"id":"Q02","title":"新規性と先行研究との違い","cues":"contribution / novelty / new / previous work / memory architecture","question":"What is the main contribution compared with existing persona research?","confirm":"Are you asking about the contribution of the evaluation design?","answer":"Our contribution is an evaluation design and a comparison under controlled histories. We separate agent instructions from history, keep probes out of the main conversation, and examine meaning-related and form-related measures separately. We do not propose a new memory architecture.","ja":"貢献は、履歴を制御した評価設計と比較です。指示と履歴を分け、測定用の質問を本流へ戻さず、意味に関する尺度と書き方に関する尺度を別々に見ます。新しい記憶機構を提案した研究ではありません。","source":"論文 Sections 1 と 2 および 6","slide":4},{"id":"Q03","title":"C2 と C3 で履歴は同一か","cues":"same history / matched / control / C2 / C3 / generated histories","question":"Did C2 and C3 receive exactly the same history?","confirm":"Are you asking whether the histories were matched between C two and C three?","answer":"Yes. Within each matched setting, C two and C three receive the same scripted history. The added A P instructions are the difference. We are not comparing two freely generated conversations that have already developed different histories.","ja":"同じ設定内では、C2 と C3 は同一の台本化された履歴を受け取ります。違いは追加の AP 指示です。自由生成の結果すでに履歴が異なる二つの会話を比較したものではありません。","source":"論文 Section 4.2 と Table 1","slide":3},{"id":"Q04","title":"AP の内容と一般化できる範囲","cues":"AP / instructions / persona prompt / cautious / prompt design","question":"What instructions were included in AP?","confirm":"Are you asking what the A P prompt asks the agent to do?","answer":"The A P asks for structured, concise, and cautious responses. It also limits clarification and discourages unsupported certainty. It does not add user attributes. We tested this one instruction set, so we cannot generalize the result to every kind of agent persona.","ja":"構造化・簡潔・慎重な応答、確認質問の制限、根拠のない断定の回避などを求めます。ユーザーの属性を追加するものではありません。一種類の指示セットなので、すべてのペルソナへの一般化はできません。","source":"論文 Section 4.2 と Table 2","slide":15},{"id":"Q05","title":"人工的な会話を使う理由","cues":"synthetic / scripted / real users / realistic / natural conversation","question":"Why did you use scripted histories rather than real conversations?","confirm":"Are you asking why we used fixed synthetic histories?","answer":"Fixed histories let us compare the same prior conversation with and without A P. This gives us control within the experiment. However, it does not establish how an agent would behave in natural, long-term interactions with real users.","ja":"同じ過去の会話を AP あり・なしで比較するためです。実験内の比較は制御しやすくなりますが、実ユーザーとの自然な長期対話で同じ結果になるとまでは言えません。","source":"論文 Sections 4.2 と 4.3 および 7","slide":5},{"id":"Q06","title":"データ数と独立な標本数","cues":"sample size / how many / independent / repetitions / replicates","question":"How many independent samples did you have?","confirm":"Are you asking about the number of independent lineages?","answer":"We had eighty lineages and four thousand three hundred and twenty responses overall. In each language, the main C two versus C three comparison used fifteen lineages per condition. Each scenario-condition cell had five repetitions. Responses within a lineage were not treated as independent samples.","ja":"全体では80系列・4,320応答です。各言語の主比較では C2 と C3 が各15系列で、シナリオと条件の各セルを5回反復しています。系列内の応答を独立した標本として扱ってはいません。","source":"論文 Sections 4.1 と 4.3 および Table 1","slide":5},{"id":"Q07","title":"測定の質問が会話を変えないか","cues":"probe / contamination / write back / branch / measurement","question":"Could the probes themselves influence later responses?","confirm":"Are you asking whether a probe changes the later conversation?","answer":"Each probe is asked in a copy of the current conversation. Neither the probe nor its answer is returned to the main lineage. The main history continues separately. This prevents the probe text from becoming part of the later history.","ja":"各 probe は現在の会話のコピーで実行します。質問も答えも本流へ戻さず、元の履歴は別に続きます。測定用の文章が後の履歴に混ざるのを防ぐ設計です。","source":"論文 Sections 4.1 と 4.4","slide":4},{"id":"Q08","title":"分離をどこまで確認したか","cues":"isolation / hidden state / backend / audit / leakage","question":"How do you know that the lineages were isolated?","confirm":"Are you asking what our isolation audit can verify?","answer":"We checked logged execution fields and reconstructed request contexts. We found no history mismatches or signs of probe write-back in that audit. However, we did not retain the raw requests sent to the provider. The audit does not prove anything about inaccessible provider-side state.","ja":"実行ログと再構成したリクエスト文脈を調べ、履歴の不一致や probe の書き戻しの兆候は見つかりませんでした。ただし実際に送信した生のリクエストは残していません。アクセスできないプロバイダー内部の状態まで証明する監査ではありません。","source":"論文 Sections 4.3 と 4.5 および 7 と Table 6","slide":16},{"id":"Q09","title":"埋め込み距離は妥当か","cues":"embedding / semantic / validity / validate / meaning","question":"How did you validate the embedding measure?","confirm":"Are you asking what the embedding measure can tell us?","answer":"We used text embedding three large as a proxy for differences in meaning. We checked sixteen handcrafted text pairs as a small qualitative diagnostic. This does not validate a personalization score, and the embedding distances did not cleanly separate all types of change.","ja":"text-embedding-3-large を使い、意味の違いを近似的に測りました。手作りの16組の文章で小さな定性的診断を行いましたが、個人化の良さを測る得点としての妥当性を示すものではなく、変化の全種類をきれいに区別できたわけでもありません。","source":"論文 Section 4.6","slide":6},{"id":"Q10","title":"書き方の指標と AP が重複しないか","cues":"rule-based / length / overlap / confound / character count","question":"Do the rule features simply reflect compliance with AP?","confirm":"Are you asking whether the rule features overlap with the A P instructions?","answer":"Yes, several features overlap with what A P asks the agent to do. The measure is also strongly affected by length. Removing character count changes the sign of the English contrast. We therefore treat it as a diagnostic of response form, not an independent measure of adaptation.","ja":"AP が要求する内容と重なる特徴があり、長さの影響も大きい指標です。文字数を外すと英語の差の符号が変わります。独立した適応の尺度ではなく、応答形式の診断として扱います。","source":"論文 Sections 4.6 と 5.4 および 7","slide":15},{"id":"Q11","title":"英語の信頼区間と p 値の不一致","cues":"significant / English / confidence interval / p-value / zero point zero five six","question":"Why does the English interval exclude zero when the p-value is above 0.05?","confirm":"Are you asking why the English interval and p-value give different threshold decisions?","answer":"They come from different procedures: a percentile bootstrap and a condition-label permutation test. They need not give identical threshold decisions in a small sample. We report both and describe the English evidence as weaker. We do not make a single clear-cut significance claim for English.","ja":"百分位ブートストラップと条件ラベルの置換検定という異なる手続きです。小標本で二値判断が一致するとは限りません。両方を示し、英語の証拠は弱めと説明します。英語について明確な有意・非有意の一言にまとめません。","source":"論文 Sections 4.6 と 5.2 および Table 8","slide":13},{"id":"Q12","title":"検定と多重比較","cues":"statistics / bootstrap / permutation / correction / multiple comparisons","question":"Did you correct for multiple comparisons?","confirm":"Are you asking whether the p-values were corrected for multiple comparisons?","answer":"No. The p-values were descriptive and were not corrected for the family of comparisons. We used lineage-level bootstrap intervals and condition-label permutation tests. We therefore emphasize the direction, uncertainty, and consistency across measurements, rather than treating each p-value as a separate confirmed finding.","ja":"p 値は記述的に扱い、多重比較全体に対する補正はしていません。系列単位のブートストラップ区間と条件ラベルの置換検定を用います。各 p 値を独立した確定的発見とせず、方向、不確実性、指標間の整合性を重視します。","source":"論文 Section 4.6 と Table 8","slide":13},{"id":"Q13","title":"変化が小さければ良いのか","cues":"better / personalization / useful / reduced drift / less responsive","question":"Does smaller drift mean that personalization is better?","confirm":"Are you asking whether smaller drift is necessarily beneficial?","answer":"No. Smaller drift may reflect greater consistency, stronger constraints from A P, or less responsiveness to history. Our experiment cannot distinguish these explanations. We did not measure whether users preferred the responses or benefited from them.","ja":"必ずしも良いとは言えません。一貫性、AP の制約、履歴への反応の弱さなどが考えられますが、区別できません。利用者が好んだか、利益を得たかも測っていません。","source":"論文 Sections 6 と 8","slide":10},{"id":"Q14","title":"同じ条件でも応答がばらつく理由","cues":"stochastic / random / same settings / between-lineage / dispersion","question":"Why do independent lineages still differ under the same conditions?","confirm":"Are you asking about variation between repeated runs?","answer":"Generation is stochastic, so repeated runs can differ under the same configured settings. We measured this as between-lineage variation. A P was associated with smaller embedding dispersion in this setup, but did not remove the variation.","ja":"生成には確率的なばらつきがあるため、設定が同じでも反復で応答が異なります。これを系列間のばらつきとして測りました。今回 AP は埋め込みのばらつきの小ささと関連しましたが、0にはなりませんでした。","source":"論文 Sections 4.3 と 5.3 および Table 7","slide":14},{"id":"Q15","title":"日本語と英語の違いの解釈","cues":"Japanese / English / translation / language / culture","question":"Can you explain the difference between Japanese and English?","confirm":"Are you asking how we interpret differences between the two languages?","answer":"The histories and probes were matched in meaning and function, rather than required to be word-for-word translations. We analyze the languages separately. This is a limited robustness check. It does not identify the cause of language differences or establish a cultural effect.","ja":"履歴と probe は、逐語訳を義務にするのでなく、意味と役割を対応させました。二言語は別々に解析し、限定的な頑健性確認として扱います。言語差の原因や文化的効果を特定したわけではありません。","source":"論文 Sections 4.2 と 4.3 および 6 と 7","slide":11},{"id":"Q16","title":"モデルと生成設定","cues":"which model / GPT / temperature / tokens / generalize","question":"Which model and generation settings did you use?","confirm":"Are you asking about the model and generation settings?","answer":"We used G P T five point one Codex mini through the Codex command-line interface. The temperature was zero point two, with a maximum of one thousand and twenty-four tokens. We have not established that the results generalize to other models or interfaces.","ja":"Codex のコマンドラインから GPT-5.1 Codex mini を使い、temperature は0.2、最大トークン数は1,024でした。他モデルや別のインターフェースへ一般化することは、この研究では確認していません。","source":"論文 Section 4.4 と Table 4 および Section 7","slide":5},{"id":"Q17","title":"人による評価の有無","cues":"human evaluation / participants / user study / ratings / preference","question":"Did you conduct a human evaluation or user study?","confirm":"Are you asking whether people evaluated the generated responses?","answer":"No. We did not collect human ratings in this study. The histories and probes were synthetic. Human judgments of consistency, response form, and adaptation are an important next step. The current measurements do not establish how people experience these differences.","ja":"この研究では人による評定は集めておらず、履歴と probe も人工的に作成しました。一貫性、応答の書き方、適応を人がどう感じるかの評価が次の課題です。現在の尺度だけでは体験上の違いは示せません。","source":"論文 Sections 4.4 と 7","slide":11},{"id":"Q18","title":"長期記憶や別セッションへの移行","cues":"long-term / memory / retention / transfer / reset / persistent","question":"Does this show that the agent retains a user model across sessions?","confirm":"Are you asking about retention or transfer across sessions?","answer":"No. The checkpoints represent added history within the experimental setup. We did not test retention after a context reset, transfer to another model, or natural interaction over a long period. These results do not establish a persistent user model.","ja":"測定時点は実験内で履歴を追加した状態です。文脈リセット後の保持、別モデルへの移行、長期間の自然な対話は検証していません。持続するユーザーモデルを示す結果ではありません。","source":"論文 Sections 3 と 7 と 8","slide":11},{"id":"Q19","title":"中間時点で四つの probe を使う理由","cues":"four probes / core / subset / selection / intermediate checkpoints","question":"How did you choose the four core probes?","confirm":"Are you asking how the core probes were selected?","answer":"In a separate bilingual rerun, we ranked eligible probes by how often C three had smaller embedding drift than C two across languages and scenarios, then by the size of the differences. This favors that direction, so the intermediate checks are exploratory. The main t zero to t ten comparison uses all twelve probes and does not depend on this selection.","ja":"別の二言語再実行において、指定形式・反復質問を除外し、言語×シナリオ6セルで C3−C2 が負となるセル数の多い順、正となるセル数の少ない順、平均絶対差の大きい順に順位付けしました。選択が C3＜C2 の方向を優先するため、中間時点は探索的な補助確認です。主たる t0→t10 比較は全12問を使い、この選定に依存しません。","source":"論文 Section 4.4; core selection 20260319 JSON と select_dense_lightweight_probes.py","slide":16},{"id":"Q20","title":"履歴なしの基準条件と確率的変動","cues":"baseline / C0 / C1 / no history / random variation / causal","question":"What do the no-history baselines tell you?","confirm":"Are you asking what C zero and C one control for?","answer":"C zero and C one are evaluated only before history is added. They show the initial response variation with and without A P. They are not full no-history trajectories over all checkpoints. We therefore do not claim that every measured difference is caused only by history.","ja":"C0 と C1 は履歴を加える前だけで評価し、AP あり・なしの初期のばらつきを示します。全時点をたどる履歴なし対照系列ではありません。測定したすべての差が履歴だけで生じたとは主張しません。","source":"論文 Sections 4.2 と 4.3 および 5.3 と Table 1","slide":14},{"id":"Q21","title":"再現性と保存されていないデータ","cues":"reproducibility / raw data / payload / embeddings / seeds / logs","question":"What are the limitations of the reproducibility audit?","confirm":"Are you asking what information was not retained?","answer":"The logged responses support the reported analyses. However, raw request payloads and raw embedding vectors were not retained. Some provider-side settings were also not logged. We cannot claim exact reproduction of the original generation or a complete audit of hidden state.","ja":"記録した応答から報告した解析を行っていますが、生のリクエストと埋め込みベクトルは保存していません。記録していないプロバイダー側の設定もあります。元の生成の完全な再現や、隠れた内部状態の完全な監査は主張できません。","source":"論文 Sections 4.5 と 4.6 および 7","slide":16},{"id":"Q22","title":"研究全体の目的と可搬性への位置づけ","cues":"broader goal / portability / research direction / practical implication / next step / future","question":"How does this study fit your broader research goal?","confirm":"Are you asking how this study relates to portability?","answer":"Our broader goal is to understand whether history-related response patterns can carry over to a new context or another model. First, we need a way to observe and compare them while examining agent instructions. This paper develops that evaluation design. It does not test persistence after a context reset, transfer to another model, or better personalization.","ja":"研究全体では、履歴に関連する応答パターンが新しい文脈や別モデルへ引き継がれるかを調べたいと考えています。その前提として、エージェントへの指示を考慮しながら観測・比較する方法が必要です。本論文はその評価設計を検討する第一段階です。文脈リセット後の保持、別モデルへの移行、個人化改善は今回検証していません。","source":"評価設計・実証範囲は論文 Sections 1、6–8。研究全体の可搬性目的は発表者方針（2026-11-16）。","slide":12},{"id":"Q23","title":"履歴に含めた希望の具体例","cues":"example / scenario / preference / smallest working version","question":"Can you give an example of the preference expressed in a history?","confirm":"Are you asking for an example from the scripted history?","answer":"In the development history, the user says, I want the smallest working version first. This is an example of the scripted input. We compare responses under the same history with and without A P. The example itself does not show that users preferred the resulting answers.","ja":"開発履歴のユーザー発言は「まず動く最小限のものがほしい」です。これは用意した入力の例で、同じ履歴のもとで AP の有無を比べます。この例自体が実ユーザーの回答への好みを示すわけではありません。実際の出力対の提示を求められた場合は、この回答で代用しないで確認後回答の表現を使います。","source":"論文 Table 3 とスライド2","slide":2},{"id":"Q24","title":"コードやデータの入手と後日の連絡","cues":"code / data / available / repository / share / contact","question":"Are the code and data available?","confirm":"Are you asking about access to the code or study materials?","answer":"I would need to check the release status before sharing code or data. Please contact me using the address on the last main slide. I can then confirm what materials can be shared.","ja":"共有前に公開・提供状況を確認する必要があります。最後の本編スライドの連絡先から連絡してもらい、提供可能な資料を確認します。公開 URL や公開済みという断定、送付の約束はしません。","source":"公開状況はこの台本では未確認。連絡先は最終稿に基づくスライド12。","slide":12}],"emergency":[{"title":"聞き取れなかった","answer":"Could you please repeat the question more slowly?","ja":"もう少しゆっくり、もう一度質問していただけますか。"},{"title":"単語は聞こえるが意味が分からない","answer":"Could you please say that in a simpler way?","ja":"もう少し簡単な言い方にしていただけますか。"},{"title":"質問を確認してから答える","answer":"May I check that I understood your question?","ja":"質問を正しく理解したか、確認してよいですか。"},{"title":"質問が複数あった","answer":"Could you please ask one question at a time?","ja":"一つずつ質問していただけますか。"},{"title":"文字で確認したい","answer":"Could you please write the key words down?","ja":"重要な言葉を書いていただけますか。"},{"title":"座長に言い換えを手伝ってもらう","answer":"Could you please help me understand the question?","ja":"質問を理解するのを手伝っていただけますか。"},{"title":"正確な回答には確認が必要","answer":"I would like to check the details before answering. May I follow up after the session?","ja":"答える前に詳細を確認したいです。セッション後に回答してよいですか。"},{"title":"この研究で調べていないこと","answer":"We did not test that in this study. I cannot draw a conclusion from these results.","ja":"それは今回調べていません。この結果から結論は出せません。"}]};const MODE="hai";const SOURCE_VERSION="hai";
+const stop = new Set('what why how the a an is are did do does this that it in of for to and you we your our with whether can could would please about have has any explain responses response different mean'.split(' '));
+function tokens(s){return s.toLowerCase().match(/[a-z0-9]+|[\u3040-\u30ff\u3400-\u9fff]+/g)||[];}
+function rank(s){const query=s.toLowerCase().trim();if(!query)return [];const ts=[...new Set(tokens(query).filter(x=>!stop.has(x)))];return DATA.qa.map(q=>{let score=0;const target=(q.question+' '+q.cues+' '+q.title).toLowerCase();for(const t of ts)if(target.includes(t))score+=t.length>2?2:1;for(const cue of q.cues.toLowerCase().split(' / '))if(cue && query.includes(cue))score+=5;if(query===q.id.toLowerCase())score+=100;return {q,score};}).filter(r=>r.score>=2).sort((a,b)=>b.score-a.score).slice(0,4);}
+function exact(s){const v=s.trim().toLowerCase();return DATA.qa.find(q=>[q.id,q.question,q.title].some(t=>t.toLowerCase()===v));}
+function el(tag,text,cl){const n=document.createElement(tag);n.textContent=text;if(cl)n.className=cl;return n;}
+let version=0,timer,controller,ready=false,composing=false,unavailableMessage="生成を利用できません。起動状態と設定を確認してください。";
+const input=document.querySelector('#question'),status=document.querySelector('#status'),out=document.querySelector('#result');
+function cancel(){version++;clearTimeout(timer);controller?.abort();controller=null;document.querySelector('#generate').disabled=false;}
+function show(q,reason='定型文'){cancel();out.replaceChildren();const card=el('section','','card');card.append(el('small',reason+' · '+(q.id||'')+' '+q.title));if(q.question)card.append(el('p',q.question));if(q.confirm)card.append(el('p',q.confirm,'confirm'));card.append(el('p',q.answer,'answer'),el('p',q.ja,'ja'));if(q.source)card.append(el('small',q.source));offerCorrection(card);out.append(card);}
+function renderGenerated(r){out.replaceChildren();const card=el('section','','card');card.append(el('small',r.kind==='insufficient'?'資料では確認できません':'ソースから生成した回答案 · 内容を確認して使用','warning'),el('h2','短い英語の回答'),el('p',r.answer_en,'answer'),el('h2','日本語訳'),el('p',r.answer_ja,'ja'));if(r.inference_ja)card.append(el('h2','推定・留意点'),el('p',r.inference_ja,'warning'));card.append(el('h2','根拠'));if(!r.citations.length)card.append(el('p','この質問に答える根拠は資料内で確認できません。','muted'));for(const c of r.citations){const d=el('details');d.open=true;d.append(el('summary',c.title),el('blockquote',c.quote));card.append(d);}offerCorrection(card);out.append(card);}
+function offerCorrection(card) {
+  if (!ready || !input.value.trim() || audioState) return;
+  const edit = el('button','質問を修正');
+  edit.onclick = () => {
+    cancel();
+    document.querySelector('#auto').checked = false;
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  };
+  card.append(edit);
+  const retry = el('button','定型文を使わず資料から回答');
+  retry.onclick = () => generate(true);
+  card.append(retry);
+}
+async function generate(force=false){
+  clearTimeout(timer);if(audioState){document.querySelector('#audioStatus').textContent='録音を停止し、文字起こしを確認してから回答を生成してください。';return;}const question=input.value.trim();if(!question||composing)return;
+  if(!ready){status.textContent=unavailableMessage;return;}
+  cancel();const mine=version;controller=new AbortController();const current=controller;
+  document.querySelector('#generate').disabled=true;out.replaceChildren(el('p','定型文との対応を確認し、必要ならソースから回答案を生成しています…','muted'));
+  try{
+    const r=await fetch('/api/answer',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':document.querySelector('meta[name="session-token"]').content},body:JSON.stringify({question,force_generate:force,presentation:MODE,version:SOURCE_VERSION}),signal:AbortSignal.any([current.signal,AbortSignal.timeout(50000)])});
+    const data=await r.json();if(mine!==version)return;if(!r.ok)throw Error(data.error||'生成に失敗しました。');
+    if(data.kind==='preset'){const q=DATA.qa.find(q=>q.id===data.preset_id);if(!q)throw Error('定型文を確認できませんでした。');show(q,'質問の意味に対応する定型文');}else renderGenerated(data);
+  }catch(e){if(mine!==version)return;out.replaceChildren(el('p',e.name==='TimeoutError'?'タイムアウトしました。もう一度生成するか、定型文を選んでください。':e.message,'warning'));}
+  finally{if(mine===version){document.querySelector('#generate').disabled=false;controller=null;refreshBudget();}}
+}
+function showChoices(query){
+  const choices=document.querySelector('#choices');choices.replaceChildren();if(!query)return;
+  const rs=rank(query);choices.append(el('p',rs.length?'関連する定型文（すぐ選択できます）':'キーワードに一致する定型文はありません。','muted'));
+  for(const r of rs){const b=el('button',r.q.id+' '+r.q.title);b.onclick=()=>show(r.q);choices.append(b);}
+}
+function search(){
+  cancel();out.replaceChildren();const query=input.value.trim();showChoices(query);if(!query)return;
+  const q=exact(query);if(q){show(q);return;}
+  if(ready&&document.querySelector('#auto').checked&&!composing){out.append(el('p','入力が止まると、質問の意味を確認して回答します。','muted'));timer=setTimeout(()=>generate(false),1400);}
+}
+input.addEventListener('input',search);
+input.addEventListener('compositionstart',()=>{composing=true;cancel();});
+input.addEventListener('compositionend',()=>{composing=false;search();});
+input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing&&!composing){e.preventDefault();generate(false);}});
+document.querySelector('#auto').addEventListener('change',search);
+document.querySelector('#generate').onclick=()=>generate(false);
+function populateLists(){
+  const list=document.querySelector('#list'),fallback=document.querySelector('#fallback');
+  list.replaceChildren();fallback.replaceChildren();
+  for(const q of DATA.qa){const b=el('button',q.id+' '+q.title);b.onclick=()=>show(q);list.append(b);}
+  for(const q of DATA.emergency){const b=el('button',q.title);b.onclick=()=>show(q);fallback.append(b);}
+}
+populateLists();
+document.querySelector('#materialTitle').textContent=DATA.title||'HAI 2026の論文と発表原稿';
+document.querySelector('#useOwn').textContent=MODE==='own'?'自分の資料を入れ替える':'自分の資料で試す';
+document.querySelector('#deleteOwn').hidden=MODE!=='own';
+document.querySelector('#deleteOwn').onclick=async()=>{
+  if(!confirm('このPCに登録した自分の資料を削除しますか？'))return;
+  const response=await fetch('/api/presentation',{method:'DELETE',headers:{'Content-Type':'application/json','X-Session-Token':document.querySelector('meta[name="session-token"]').content}});
+  if(response.ok)location.href='/?mode=hai';
+  else status.textContent='登録した資料を削除できませんでした。';
+};
+document.querySelector('#useHai').onclick=()=>{
+  if(location.protocol==='file:'){location.reload();return;}
+  location.href='/?mode=hai';
+};
+document.querySelector('#useOwn').onclick=()=>{
+  if(location.protocol!=='file:' && MODE!=='own' && document.querySelector('#useOwn').dataset.available==='1') {
+    location.href='/?mode=own';return;
+  }
+  const panel=document.querySelector('#ownImport');
+  panel.hidden=false;
+  if(panel.childElementCount)return;
+  window.QAImport.mount(panel,async pack=>{
+    if(location.protocol==='file:'){
+      DATA=pack;
+      populateLists();
+      input.value='';
+      search();
+      document.querySelector('#materialTitle').textContent=pack.title;
+      panel.hidden=true;
+      status.textContent='自分の資料を読み込みました。オフラインでは定型文を参照できます。生成には Start_QA_Notes.cmd を起動してください。';
+      return;
+    }
+    const response=await fetch('/api/presentation',{method:'POST',headers:{'Content-Type':'application/json','X-Session-Token':document.querySelector('meta[name="session-token"]').content},body:JSON.stringify(pack)});
+    const result=await response.json();
+    if(!response.ok)throw Error(result.error||'資料を登録できませんでした。');
+    location.href='/?mode=own';
+  },{assetBase:location.protocol==='file:'?'./':'/'});
+};
+document.querySelector('#reset').onclick=()=>{abortAudio();liveTranscript.textContent='';audioStatus.textContent='次の質問を録音できます。';input.value='';search();input.focus();};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelector('#reset').click();if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();input.focus();}});
+async function refreshBudget(){
+  if(location.protocol==='file:')return;
+  try{const s=await(await fetch('/api/status')).json();const b=s.budget;
+    if(b){const n=document.querySelector('#budgetStatus');n.textContent=b.error||('このアプリの利用額（保守的な推計） USD '+b.accountedUSD.toFixed(3)+' / 上限 USD '+b.limitUSD.toFixed(2)+' · アカウント残高ではありません。');}
+  }catch{}
+}
+async function init(){
+  if(location.protocol==='file:'){status.textContent='オフライン定型文モード · 生成は Start_QA_Notes.cmd から起動してください。';return;}
+  try{const r=await fetch('/api/status');if(!r.ok)throw Error();const s=await r.json();
+    ready=s.configured && (!s.budget || (s.budget.creditVerified && Date.now() < Date.parse(s.budget.creditExpiresAt)));
+    unavailableMessage=s.configured?'クレジット残高・期限の確認待ち、または期限切れのため生成を停止しています。定型文は利用できます。':'APIキー未設定 · .env.local を設定しサーバーを再起動してください。';
+    document.querySelector('#useOwn').dataset.available=s.ownAvailable?'1':'0';
+    status.textContent=ready?'生成準備OK · '+s.model+' · 登録した定型文 '+DATA.qa.length+'問':unavailableMessage;
+    refreshBudget();if(ready&&input.value.trim())search();
+  }catch{status.textContent='サーバーに接続できません。定型文は引き続き利用できます。';}
+}
+init();
+
+let audioState=null;
+const record=document.querySelector('#record'),recordStop=document.querySelector('#recordStop'),audioStatus=document.querySelector('#audioStatus'),liveTranscript=document.querySelector('#liveTranscript');
+function releaseMic(s){s.stream?.getTracks().forEach(t=>t.stop());s.node?.disconnect();if(s.ctx&&s.ctx.state!=='closed')s.ctx.close().catch(()=>{});clearInterval(s.clock);}
+function abortAudio(){const s=audioState;if(!s)return;audioState=null;releaseMic(s);s.ws?.close();record.disabled=false;recordStop.disabled=true;document.querySelector('#auto').disabled=false;liveTranscript.textContent='';audioStatus.textContent='録音を終了しました。';}
+function finishAudio(s,text,message){
+ if(audioState!==s)return;
+ audioState=null;releaseMic(s);s.ws?.close();record.disabled=false;recordStop.disabled=true;document.querySelector('#auto').disabled=false;
+ // Never overwrite hand edits made while the live preview was running.
+ const merged=[input.value.trim(),text.trim()].filter(Boolean).join('\n');
+ if(merged.length<=1500){input.value=merged;search();audioStatus.textContent=message||'文字起こしを質問欄に反映しました。確認・修正して「確認した質問で回答を表示」を押してください。';}
+ else audioStatus.textContent='1500文字を超えるため自動反映しませんでした。下の文字起こしから必要な部分を質問欄にコピーしてください。';
+ liveTranscript.textContent=text;refreshBudget();input.focus();
+}
+record.onclick=async()=>{
+ if(audioState)return;if(!ready){audioStatus.textContent=unavailableMessage;return;}
+ if(!navigator.mediaDevices?.getUserMedia||!window.AudioWorkletNode){audioStatus.textContent='音声入力は最新のChromeまたはEdgeで http://127.0.0.1:8765/ を開いてください。';return;}
+ cancel();document.querySelector('#auto').checked=false;document.querySelector('#auto').disabled=true;
+ const s={text:'',started:Date.now()};audioState=s;record.disabled=true;recordStop.disabled=false;liveTranscript.textContent='';audioStatus.textContent='マイクの許可と音声接続を確認しています…';
+ try{
+  s.stream=await navigator.mediaDevices.getUserMedia({audio:{channelCount:1,echoCancellation:true,noiseSuppression:true},video:false});
+  if(audioState!==s){releaseMic(s);return;}
+  s.ctx=new AudioContext();await s.ctx.audioWorklet.addModule('/pcm-worklet.js');await s.ctx.resume();
+  if(audioState!==s){releaseMic(s);return;}
+  s.node=new AudioWorkletNode(s.ctx,'capture-pcm');s.source=s.ctx.createMediaStreamSource(s.stream);
+  s.ws=new WebSocket('ws://'+location.host+'/api/audio?token='+encodeURIComponent(document.querySelector('meta[name="session-token"]').content)+'&language='+document.querySelector('#audioLanguage').value);
+  s.ws.onmessage=e=>{if(audioState!==s)return;const data=JSON.parse(e.data);
+   if(data.type==='ready'){
+    s.capturing=true;s.started=Date.now();s.source.connect(s.node);s.node.connect(s.ctx.destination);
+    s.node.port.onmessage=event=>{if(audioState!==s||s.stopping||s.ws.readyState!==1)return;if(event.data.flushed){s.stopping=true;releaseMic(s);s.ws.send('stop');return;}if(s.ws.bufferedAmount>192000){finishAudio(s,s.text,'通信が追いつかないため停止しました。文字起こしを確認してください。');return;}s.ws.send(event.data);};
+    s.clock=setInterval(()=>{audioStatus.textContent='● 録音・OpenAIへ送信中 '+Math.floor((Date.now()-s.started)/1000)+'秒 / 300秒 · 停止後に確認してください。';},1000);
+    audioStatus.textContent='● 録音・OpenAIへ送信中…';
+   }
+   if(data.type==='delta'){s.text+=data.text;liveTranscript.textContent=s.text;showChoices([input.value.trim(),s.text].join(' ').trim());}
+   if(data.type==='stopping'){s.stopping=true;releaseMic(s);recordStop.disabled=true;audioStatus.textContent='音声送信を停止しました。最後の文字起こしを確定中…';}
+   if(data.type==='final')finishAudio(s,data.text||s.text);
+   if(data.type==='error')finishAudio(s,s.text,data.message+' 表示された文字起こしは未確定です。');
+  };
+  s.ws.onerror=()=>finishAudio(s,s.text,'音声接続に失敗しました。マイク許可・接続・利用枠を確認してください。手入力も利用できます。');
+  s.ws.onclose=()=>{if(audioState===s)finishAudio(s,s.text,'接続が終了しました。未確定の文字起こしを確認してください。');};
+ }catch(e){finishAudio(s,s.text,e.name==='NotAllowedError'?'マイクが許可されていません。ブラウザーのマイク設定を確認してください。':'マイクを開始できませんでした。手入力も利用できます。');}
+};
+recordStop.onclick=()=>{const s=audioState;if(!s)return;recordStop.disabled=true;audioStatus.textContent='録音停止 · 文字起こしを確定中…';if(s.ws?.readyState===1&&s.capturing){s.node.port.postMessage('flush');}else finishAudio(s,s.text,'録音を停止しました。');};
+window.addEventListener('pagehide',abortAudio);
+</script></body></html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://api.github.com; worker-src 'self'; img-src 'none'; base-uri 'none'; form-action 'none'">
+<!--SESSION--><title>Q&A Notes</title>
+<style>
+body{margin:0;background:#111821;color:#edf3fa;font:18px system-ui}main{max-width:1100px;margin:auto;padding:24px}h1{font-size:25px}h2{font-size:16px;color:#aebed0;margin-top:24px}#question{box-sizing:border-box;width:100%;padding:15px;border:1px solid #71809a;border-radius:8px;background:#202c3c;color:white;font-size:22px}button{background:#26384d;color:#edf3fa;border:1px solid #64758a;border-radius:7px;padding:10px;margin:4px;cursor:pointer}button:hover,button:focus{background:#385778}button:disabled{opacity:.55;cursor:wait}#generate{border-color:#8ed5e5}small,.muted{color:#aebed0;font-size:14px}.card{background:#1b2735;border:1px solid #415671;border-radius:10px;padding:22px;margin:14px 0}.answer{font-size:28px;line-height:1.5}.confirm{color:#8ed5e5;font-size:20px}.ja{color:#c4ced9;line-height:1.7}#choices button{text-align:left}#list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}details{margin-top:18px}summary{cursor:pointer;padding:10px}.warning{color:#ffd893}blockquote{white-space:pre-wrap;overflow-wrap:anywhere;margin:10px;border-left:3px solid #8ed5e5;padding:12px;line-height:1.6;font-size:15px}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}label{font-size:14px}.importer label{display:block;margin:12px 0}.importer textarea,.importer input[type=text],.importer input[type=url]{box-sizing:border-box;width:100%;background:#202c3c;color:#edf3fa;border:1px solid #71809a;border-radius:8px;padding:10px;font:16px system-ui}.importer-qa-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}.importer-qa-fields button{grid-column:1 / -1}.importer-files{max-height:220px;overflow:auto}.importer-files label{margin:4px 0;overflow-wrap:anywhere}.importer input[type=file]{display:block;margin-top:5px;max-width:100%}@media(max-width:600px){main{padding:12px}.answer{font-size:23px}.importer-qa-fields{grid-template-columns:1fr}}
+</style></head><body><main>
+<h1>Q&A Notes</h1>
+<div class="controls"><button id="useHai">HAI論文で試す</button><button id="useOwn">自分の資料で試す</button><button id="deleteOwn" hidden>登録した資料を削除</button><small id="materialTitle"></small></div>
+<div id="ownImport" hidden></div>
+<p id="status" class="muted" role="status">起動状態を確認しています…</p>
+<p id="budgetStatus" class="muted" role="status"></p>
+<section class="card"><div class="controls"><label>質問の言語 <select id="audioLanguage"><option value="en">English</option><option value="ja">日本語</option><option value="both">英語＋日本語</option></select></label><button id="record">録音開始</button><button id="recordStop" disabled>停止して質問欄へ反映</button></div><p id="audioStatus" class="muted" role="status">録音中のマイク音声をOpenAI APIへ送ります。1回最大5分。回答生成は確認後のクリックで行います。</p><p id="liveTranscript" style="white-space:pre-wrap" aria-live="polite"></p></section>
+<textarea rows="3" id="question" aria-label="質問またはキーワード" placeholder="聞かれた質問を入力（日本語・英語） / Q01" autocomplete="off" maxlength="1500"></textarea>
+<p class="muted">/ で検索欄へ · Enter ですぐ判定 · Shift+Enter で改行 · Esc でクリア · Q番号は通信せず表示</p>
+<div class="controls"><label><input type="checkbox" id="auto">入力後に自動判定・生成</label><button id="generate">確認した質問で回答を表示</button><button id="reset">次の質問 / クリア</button></div>
+<p class="muted">自動判定・生成では質問・登録資料・想定問答をOpenAI APIへ送信します（API利用料がかかります）。生成した回答案は根拠を確認して使用してください。</p>
+<div id="choices"></div><div id="result" aria-live="polite" aria-atomic="true"></div>
+<details><summary>聞き返し・確認のフレーズ</summary><div id="fallback"></div></details>
+<details><summary>用意した質問を選ぶ</summary><div id="list"></div></details>
+<p class="muted">発表時は拡張画面でスライドだけを投影し、この画面は手元に表示してください。</p>
+</main><script src="importer.js"></script><script>/*LOGIC*/</script></body></html>
